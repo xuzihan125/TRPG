@@ -23,18 +23,18 @@ public class PhoneValidator implements ConstraintValidator<PhoneValid,String> {
     @Override
     public boolean isValid(String phone, ConstraintValidatorContext context) {
         if(phone.isEmpty()){
-            log.warn("PhoneValidator phone is empty, phone = {}", phone);
+//            log.warn("PhoneValidator phone is empty, phone = {}", phone);
             return false;
         }
 
         if(phone.length() != PHONE_LENGTH){
-            log.warn("PhoneValidator phone length valid fail, phone = {}", phone);
+//            log.warn("PhoneValidator phone length valid fail, phone = {}", phone);
             return false;
         }
 
 
         if(!pattern.matcher(phone).matches()){
-            log.warn("PhoneValidator phone pattern valid fail, phone = {}", phone);
+//            log.warn("PhoneValidator phone pattern valid fail, phone = {}", phone);
             return false;
         }
 
