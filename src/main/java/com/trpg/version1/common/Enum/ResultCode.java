@@ -12,6 +12,8 @@ public enum ResultCode {
     //03:其他服务器调用
     INVALID_PHONE_CLIENT("030001","手机号码验证服务器连接失败"),
     INVALID_PHONE_TARGET("030002","短信发送失败"),
+    //04:房间操作
+    INVALID_ROOM_ROLE("040001","用户权限不足"),
     EMAILNOTEXIST("400002","账号不存在"),
     NOT_EXIST_BOOK("200001","满足条件的书不存在"),
     FILE_OPERATION_FAIL("500001","文件操作失败"),

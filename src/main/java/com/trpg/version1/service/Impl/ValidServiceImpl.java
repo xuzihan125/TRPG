@@ -5,6 +5,7 @@ import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.exception.OpException;
 import com.trpg.version1.service.ValidService;
 import com.zhenzi.sms.ZhenziSmsClient;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -17,6 +18,8 @@ import java.util.Random;
  **/
 @Service
 public class ValidServiceImpl implements ValidService {
+    public static Session session = new Session();
+
     //这个不用改
     private String apiUrl = "https://sms_developer.zhenzikj.com";
     //榛子云系统上获取

@@ -48,6 +48,7 @@ public class SwaggerConfig {
                 .groupName("房间列表接口")
                 .globalOperationParameters(builder());
     }
+
 //
 //    @Bean
 //    public Docket createEbookDocket(){

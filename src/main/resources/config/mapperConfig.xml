@@ -31,8 +31,17 @@
         </javaClientGenerator>
 
         <!-- ???? -->
-        <table tableName="module" domainObjectName = "Module"  enableCountByExample="true" >
-            <generatedKey column="mid" sqlStatement="MySql" identity="true" />
+        <table tableName="room" domainObjectName = "Room"  enableCountByExample="true" >
+            <generatedKey column="roomId" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="roomUser" domainObjectName = "RoomUser"  enableCountByExample="true" >
+<!--            <generatedKey column="roomId" sqlStatement="MySql" identity="true" />-->
+        </table>
+        <table tableName="chatGroupDTO" domainObjectName = "ChatGroup"  enableCountByExample="true" >
+            <generatedKey column="chatId" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="chatUser" domainObjectName = "ChatUser"  enableCountByExample="true" >
+<!--            <generatedKey column="chatId" sqlStatement="MySql" identity="true" />-->
         </table>
 <!--        <table tableName="sys_user" domainObjectName = "SysUser"  enableCountByExample="true" >-->
 <!--            <generatedKey column="userId" sqlStatement="MySql" identity="true" />-->
