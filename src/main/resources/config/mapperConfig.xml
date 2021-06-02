@@ -30,13 +30,13 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="attribute" domainObjectName = "Attribute"  enableCountByExample="true" >
-            <generatedKey column="attributeid" sqlStatement="MySql" identity="true" />
-        </table>
+        <!--<table tableName="attribute" domainObjectName = "Attribute"  enableCountByExample="true" >-->
+            <!--<generatedKey column="attributeid" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
 
-        <table tableName="attributeCharacter" domainObjectName = "AttributeCharacter"  enableCountByExample="true" >
+        <!--<table tableName="attributeCharacter" domainObjectName = "AttributeCharacter"  enableCountByExample="true" >-->
 
-        </table>
+        <!--</table>-->
 
         <!-- ???? -->
         <!--<table tableName="module" domainObjectName = "Module"  enableCountByExample="true" >-->
@@ -47,9 +47,9 @@
 
         <!--</table>-->
 
-        <!--<table tableName="character" domainObjectName = "Character"  enableCountByExample="true" >-->
+        <table tableName="charact" domainObjectName = "Charact"  enableCountByExample="true" >
 
-        <!--</table>-->
+        </table>
 
         <!--<table tableName="description" domainObjectName = "Description"  enableCountByExample="true" >-->
             <!--<generatedKey column="descriptionid" sqlStatement="MySql" identity="true" />-->

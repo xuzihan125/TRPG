@@ -10,7 +10,6 @@ import com.trpg.version1.mybatis.dto.LoginDTO;
 import com.trpg.version1.mybatis.dto.UserDTO;
 import com.trpg.version1.mybatis.dto.UserModifyDTO;
 import com.trpg.version1.mybatis.entity.*;
-import com.trpg.version1.mybatis.entity.Character;
 import com.trpg.version1.mybatis.vo.LoginVO;
 import com.trpg.version1.mybatis.vo.UserInfoVO;
 import com.trpg.version1.mybatis.vo.UserModifyVO;
@@ -22,7 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Attr;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -44,7 +42,7 @@ public class UserServiceImpl implements UserService {
     private SysUserMapper sysUserMapper;
 
     @Resource
-    private CharacterMapper characterMapper;
+    private CharactMapper characterMapper;
 
     @Resource
     private CommentUserMapper commentUserMapper;
@@ -181,12 +179,12 @@ public class UserServiceImpl implements UserService {
         userInfoVO.setAvgscore(commentUserList.size() == 0 ? 0 : sum / commentUserList.size());
 
         //根据id查询出对应的角色列表
-        CharacterExample characterExample = new CharacterExample();
+        CharactExample characterExample = new CharactExample();
         characterExample.createCriteria().andUseridEqualTo(id);
-        List<Character> characters = characterMapper.selectByExample(characterExample);
+        List<Charact> characters = characterMapper.selectByExample(characterExample);
 
         List<Map<String, String>> characterDescriptionOfUserList = new ArrayList<Map<String, String>>();
-        for(Character character : characters){
+        for(Charact character : characters){
             //获取每一个角色的属性列表
             Map<String, String> attributes = new HashMap<String, String>();
             Integer characterid = character.getCharacterid();
