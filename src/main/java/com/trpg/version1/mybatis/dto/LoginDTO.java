@@ -2,7 +2,9 @@ package com.trpg.version1.mybatis.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * @author xuzihan
@@ -12,8 +14,9 @@ import javax.validation.constraints.NotBlank;
  **/
 @Data
 public class LoginDTO {
-    @NotBlank
-    private String username;
-    @NotBlank
+    @NotEmpty(message = "010003")
+    @Email(message = "010006")
+    private String email;
+    @NotEmpty(message = "010004")
     private String password;
 }
