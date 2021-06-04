@@ -14,9 +14,16 @@ public enum ResultCode {
     INVALID_PHONE_TARGET("030002","短信发送失败"),
     //04:房间操作
     INVALID_ROOM_ROLE("040001","用户权限不足"),
+    //05：文件操作
+    FILE_OPERATION_FAIL("050001","同名文件已存在"),
+    FILE_EMPTY("050002","文件为空"),
+    FILE_NOT_EXIST("050003","文件不存在"),
+    FILE_DOWNLOAD_FAIL("050004","文件传输失败"),
+    FILE_NAME_UNENCODABLE("050004","文件传输失败"),
+
     EMAILNOTEXIST("400002","账号不存在"),
     NOT_EXIST_BOOK("200001","满足条件的书不存在"),
-    FILE_OPERATION_FAIL("500001","文件操作失败"),
+
     INVALID_AUTHOR("300001","权限错误"),
     ERROR_LIST_COPY("800001","链表复制错误");
 
