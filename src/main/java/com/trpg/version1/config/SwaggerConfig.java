@@ -48,6 +48,18 @@ public class SwaggerConfig {
                 .groupName("房间列表接口")
                 .globalOperationParameters(builder());
     }
+
+    @Bean
+    public Docket createModuleDocket(){
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.trpg.version1.controller.module"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo())
+                .groupName("模组列表接口")
+                .globalOperationParameters(builder());
+    }
 //
 //    @Bean
 //    public Docket createEbookDocket(){
