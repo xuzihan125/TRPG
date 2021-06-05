@@ -1,6 +1,8 @@
 package com.trpg.version1.common.Enum;
 
 public enum ResultCode {
+    //99：未定义错误
+    UNFROSEEN_ERROR("990001","未定义错误"),
     //00：操作成功
     SUCCESS("000000","返回成功"),
     //01：参数校验
@@ -56,5 +58,14 @@ public enum ResultCode {
 
     public String getDesc() {
         return desc;
+    }
+
+    public static ResultCode getError(String code){
+        for(ResultCode error: ResultCode.values()){
+            if(code.equals(error.code)){
+                return error;
+            }
+        }
+        return ResultCode.UNFROSEEN_ERROR;
     }
 }

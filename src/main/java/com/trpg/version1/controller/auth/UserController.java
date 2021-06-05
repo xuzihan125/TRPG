@@ -3,6 +3,7 @@ package com.trpg.version1.controller.auth;
 import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.JsonMessage;
 import com.trpg.version1.common.exception.OpException;
+import com.trpg.version1.common.util.ResultCodeUtil;
 import com.trpg.version1.mybatis.dto.LoginDTO;
 import com.trpg.version1.mybatis.dto.UserDTO;
 import com.trpg.version1.mybatis.dto.UserModifyDTO;
@@ -47,28 +48,8 @@ public class UserController {
             //WRONGFORMAT_PHONE("010010", "电话号码格式错误")
             //EMPTY_NICKNAME("010011", "昵称不能为空"),
             //WRONGFORMAT_NICKNAME("010012", "昵称长度必须在6到32之间"),
-            List<FieldError> fieldErrors = userCheckResult.getFieldErrors();
-            switch (fieldErrors.get(0).getDefaultMessage()) {
-                case "010003":
-                    throw new OpException(ResultCode.EMPTY_EMAIL.getCode(),ResultCode.EMPTY_EMAIL.getDesc());
-                case "010006":
-                    throw new OpException(ResultCode.WRONGFORMAT_EMAIL.getCode(),ResultCode.WRONGFORMAT_EMAIL.getDesc());
-                case "010004":
-                    throw new OpException(ResultCode.EMPTY_PASSWORD.getCode(),ResultCode.EMPTY_PASSWORD.getDesc());
-                case "010005":
-                    throw new OpException(ResultCode.EMPTY_REPASSWORD.getCode(),ResultCode.EMPTY_REPASSWORD.getDesc());
-                case "010007":
-                    throw new OpException(ResultCode.WRONGFORMAT_PASSWORD.getCode(),ResultCode.WRONGFORMAT_PASSWORD.getDesc());
-                case "010009":
-                    throw new OpException(ResultCode.EMPTY_PHONE.getCode(),ResultCode.EMPTY_PHONE.getDesc());
-                case "010010":
-                    throw new OpException(ResultCode.WRONGFORMAT_PHONE.getCode(),ResultCode.WRONGFORMAT_PHONE.getDesc());
-                case "010011":
-                    throw new OpException(ResultCode.EMPTY_NICKNAME.getCode(),ResultCode.EMPTY_NICKNAME.getDesc());
-                case "010012":
-                    throw new OpException(ResultCode.WRONGFORMAT_NICKNAME.getCode(),ResultCode.WRONGFORMAT_NICKNAME.getDesc());
-            }
-//            throw new OpException(ResultCode.INVALID_INPUT.getCode(),ResultCode.INVALID_INPUT.getDesc());
+            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(userCheckResult);
+            throw new OpException(resultCode.getCode(),resultCode.getDesc());
         }
         return new JsonMessage<String>(userService.createUser(userDTO));
     }
@@ -77,15 +58,8 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public JsonMessage<LoginVO> login(@Valid LoginDTO loginDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-            switch (fieldErrors.get(0).getDefaultMessage()) {
-                case "010003":
-                    throw new OpException(ResultCode.EMPTY_EMAIL.getCode(),ResultCode.EMPTY_EMAIL.getDesc());
-                case "010006":
-                    throw new OpException(ResultCode.WRONGFORMAT_EMAIL.getCode(),ResultCode.WRONGFORMAT_EMAIL.getDesc());
-                case "010004":
-                    throw new OpException(ResultCode.EMPTY_PASSWORD.getCode(),ResultCode.EMPTY_PASSWORD.getDesc());
-            }
+            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
+            throw new OpException(resultCode.getCode(),resultCode.getDesc());
 //            throw new OpException(ResultCode.INVALID_INPUT.getCode(),ResultCode.INVALID_INPUT.getDesc());
         }
         return new JsonMessage<LoginVO>(userService.login(loginDTO));
@@ -103,25 +77,8 @@ public class UserController {
             //WRONGFORMAT_NICKNAME("010012", "昵称长度必须在6到32之间"),
             //EMPTY_WECHATID("010013", "微信号不能为空"),
             //EMPTY_DESCRI("010014", "描述不能为空"),
-            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-            switch (fieldErrors.get(0).getDefaultMessage()) {
-                case "010003":
-                    throw new OpException(ResultCode.EMPTY_EMAIL.getCode(), ResultCode.EMPTY_EMAIL.getDesc());
-                case "010006":
-                    throw new OpException(ResultCode.WRONGFORMAT_EMAIL.getCode(), ResultCode.WRONGFORMAT_EMAIL.getDesc());
-                case "010009":
-                    throw new OpException(ResultCode.EMPTY_PHONE.getCode(), ResultCode.EMPTY_PHONE.getDesc());
-                case "010010":
-                    throw new OpException(ResultCode.WRONGFORMAT_PHONE.getCode(), ResultCode.WRONGFORMAT_PHONE.getDesc());
-                case "010011":
-                    throw new OpException(ResultCode.EMPTY_NICKNAME.getCode(), ResultCode.EMPTY_NICKNAME.getDesc());
-                case "010012":
-                    throw new OpException(ResultCode.WRONGFORMAT_NICKNAME.getCode(), ResultCode.WRONGFORMAT_NICKNAME.getDesc());
-                case "010013":
-                    throw new OpException(ResultCode.EMPTY_WECHATID.getCode(), ResultCode.EMPTY_WECHATID.getDesc());
-                case "010014":
-                    throw new OpException(ResultCode.EMPTY_DESCRI.getCode(), ResultCode.EMPTY_DESCRI.getDesc());
-            }
+            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
+            throw new OpException(resultCode.getCode(),resultCode.getDesc());
         }
         return new JsonMessage<UserModifyVO>(userService.UserModify(userModifyDTO));
     }

@@ -24,14 +24,14 @@ public class ExceptionHandle {
     @ExceptionHandler(value = ConstraintDeclarationException.class)
     public Object handleConstraintDeclarationException(Exception e, HttpServletRequest req){
         logger.error(e.getMessage());
-        e.printStackTrace();
+//        e.printStackTrace();
         return new JsonMessage<String>(e.getMessage(),ResultCode.INVALID_ATTRIBUTE.getCode(),ResultCode.INVALID_ATTRIBUTE.getDesc());
     }
 
     @ExceptionHandler(value = {OpException.class})
     public Object handleException(OpException e, HttpServletRequest req) {
         logger.error(e.getMessage());
-        e.printStackTrace();
+//        e.printStackTrace();
         return new JsonMessage<String>("系统错误",e.getErrorCode(),e.getMessage());
     }
 
