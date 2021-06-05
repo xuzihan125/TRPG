@@ -26,7 +26,7 @@ import java.util.List;
  * @data 2021/5/25
  **/
 @Api(value = "房间控制")
-@RestController
+@RestController()
 public class RoomComtroller {
     @Resource
     private RoomService roomService;

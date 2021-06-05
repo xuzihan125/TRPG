@@ -13,8 +13,7 @@ import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.ChatUserDTO;
 import com.trpg.version1.mybatis.entity.*;
 import com.trpg.version1.mybatis.vo.RoomVO;
-import com.trpg.version1.service.WebsocketService;
-import org.springframework.security.core.parameters.P;
+import com.trpg.version1.service.WebSocketService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
  **/
 @Service
 @ServerEndpoint("/myws")
-public class WebSocketServiceImpl implements WebsocketService {
+public class WebSocketServiceImpl implements WebSocketService {
     /**
      * 在线人数  //使用原子类AtomicInteger, --->  static并发会产生线程安全问题，    //public  static Integer onlineNumber = 0;
      */
@@ -95,6 +94,7 @@ public class WebSocketServiceImpl implements WebsocketService {
     @OnError
     public void onError(@PathParam("userId") String userId, Session session, Throwable error) {
         error.printStackTrace();
+        clients.remove(userId);
     }
 
     /**

@@ -22,7 +22,7 @@ public class PhoneValidator implements ConstraintValidator<PhoneValid,String> {
 
     @Override
     public boolean isValid(String phone, ConstraintValidatorContext context) {
-        if(phone.isEmpty()){
+        if(phone == null ||phone.isEmpty()){
 //            log.warn("PhoneValidator phone is empty, phone = {}", phone);
             return false;
         }

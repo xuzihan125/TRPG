@@ -1,16 +1,50 @@
-//import org.springframework.messaging.handler.annotation.MessageMapping;
-//import org.springframework.messaging.handler.annotation.SendTo;
-//import org.springframework.messaging.simp.annotation.SendToUser;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//
-//import java.security.Principal;
-//
-//@Controller
-//@RequestMapping("/webSocket")
-//@MessageMapping("foo")
-//public class WebSocketController {
-//
+package com.trpg.version1.controller.room;
+
+import com.trpg.version1.common.JsonMessage;
+import com.trpg.version1.mybatis.entity.Room;
+import com.trpg.version1.mybatis.vo.RoomVO;
+import com.trpg.version1.service.Impl.WebSocketServiceImpl;
+import com.trpg.version1.service.WebSocketService;
+import io.swagger.annotations.Api;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.security.Principal;
+
+@Api(value = "房间操作")
+@RestController
+@MessageMapping("foo")
+public class RoomOpController {
+    @Resource
+    WebSocketService webSocketService;
+
+    @RequestMapping(value = "/room/create/{uid}")
+    public JsonMessage<RoomVO> createRoom(@PathVariable("uid") String uid, Room room){
+        return new JsonMessage(webSocketService.createRoom(uid,room));
+    }
+
+    @RequestMapping(value = "/room/delete/{uid}/{rid}")
+    public JsonMessage<RoomVO> deleteRoom(@PathVariable("uid") String uid, @PathVariable("rid") Integer rid){
+        return new JsonMessage(webSocketService.deleteRoom(uid,rid));
+    }
+
+    @RequestMapping(value = "/room/enter/{uid}/{rid}")
+    public JsonMessage<RoomVO> enterRoom(@PathVariable("uid") Integer uid, @PathVariable("rid") Integer rid){
+        return new JsonMessage(webSocketService.enterRoom(uid,rid));
+    }
+
+    @RequestMapping(value = "/room/delete/{rid}")
+    public JsonMessage<RoomVO> createRoom(@PathVariable("rid") Integer rid){
+        return new JsonMessage(webSocketService.getOnlineUsersList(rid));
+    }
+
+
 //    /**
 //     * 精准推送
 //     * @param msg
@@ -37,67 +71,67 @@
 //
 //        return "广播推送，所有用户都收得到";
 //    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//package com.trpg.version1.controller.room;
+//
+//import com.trpg.version1.common.JsonMessage;
+//import com.trpg.version1.mybatis.dto.ChatMessageDTO;
+//import org.springframework.messaging.handler.annotation.MessageMapping;
+//import org.springframework.messaging.handler.annotation.Payload;
+//import org.springframework.messaging.handler.annotation.SendTo;
+//import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RestController;
+//
+///**
+// * @author xuzihan
+// * @version 1.0
+// * @description: TODO
+// * @data 2021/5/27
+// **/
+//@RestController(value = "房间内接口")
+//public class RoomOpController {
+//    @MessageMapping("/{rid}/{uid}/sendMessage")
+//    @SendTo("/topic/public")//发送目的地
+//    public JsonMessage<String> sendMessage(){
+//        return null;
+//    }
+//
+//    @MessageMapping("/chat.addUser")//"/send/chat.addUser"
+//    @SendTo("/topic/public")
+//    public ChatMessageDTO addUser(@Payload ChatMessageDTO chatMessage,
+//                               SimpMessageHeaderAccessor headerAccessor) {
+//        // Add username in web socket session
+//        headerAccessor.getSessionAttributes().put("username", chatMessage.getSenderUid());
+//        return chatMessage;
+//    }
 //}
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-////package com.trpg.version1.controller.room;
-////
-////import com.trpg.version1.common.JsonMessage;
-////import com.trpg.version1.mybatis.dto.ChatMessageDTO;
-////import org.springframework.messaging.handler.annotation.MessageMapping;
-////import org.springframework.messaging.handler.annotation.Payload;
-////import org.springframework.messaging.handler.annotation.SendTo;
-////import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-////import org.springframework.stereotype.Controller;
-////import org.springframework.web.bind.annotation.RequestMapping;
-////import org.springframework.web.bind.annotation.RestController;
-////
-/////**
-//// * @author xuzihan
-//// * @version 1.0
-//// * @description: TODO
-//// * @data 2021/5/27
-//// **/
-////@RestController(value = "房间内接口")
-////public class RoomOpController {
-////    @MessageMapping("/{rid}/{uid}/sendMessage")
-////    @SendTo("/topic/public")//发送目的地
-////    public JsonMessage<String> sendMessage(){
-////        return null;
-////    }
-////
-////    @MessageMapping("/chat.addUser")//"/send/chat.addUser"
-////    @SendTo("/topic/public")
-////    public ChatMessageDTO addUser(@Payload ChatMessageDTO chatMessage,
-////                               SimpMessageHeaderAccessor headerAccessor) {
-////        // Add username in web socket session
-////        headerAccessor.getSessionAttributes().put("username", chatMessage.getSenderUid());
-////        return chatMessage;
-////    }
-////}
