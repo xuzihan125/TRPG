@@ -16,5 +16,5 @@ public class ChatMessageDTO {
     private int senderUid;
     private String content;
     private int targetChatId;
-    private String time;
+    private Date time;
 }

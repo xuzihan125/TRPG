@@ -7,6 +7,8 @@ import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.Impl.WebSocketServiceImpl;
 import com.trpg.version1.service.WebSocketService;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.SendToUser;
@@ -16,10 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.security.Principal;
 
+
 @Api(value = "房间操作")
 @RestController
 @MessageMapping("foo")
 public class RoomOpController {
+
+    private Logger logger = LoggerFactory.getLogger(RoomOpController.class);
+
     @Resource
     WebSocketService webSocketService;
 
@@ -51,6 +57,7 @@ public class RoomOpController {
 
     @MessageMapping("/test")
     public JsonMessage<String> sendMessageTest(ChatMessageDTO chatMessageDTO){
+        logger.info(chatMessageDTO.getContent());
         webSocketService.sendTest(chatMessageDTO);
         return new JsonMessage<>("发送成功");
     }
