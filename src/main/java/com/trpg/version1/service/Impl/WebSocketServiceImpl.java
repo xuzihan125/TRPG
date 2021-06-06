@@ -1,6 +1,7 @@
 package com.trpg.version1.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.sun.javafx.binding.StringFormatter;
 import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.Enum.RoomRoleEnum;
 import com.trpg.version1.common.exception.OpException;
@@ -14,12 +15,14 @@ import com.trpg.version1.mybatis.dto.ChatUserDTO;
 import com.trpg.version1.mybatis.entity.*;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.WebSocketService;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -31,7 +34,7 @@ import java.util.stream.Collectors;
  * @data 2021/5/29
  **/
 @Service
-@ServerEndpoint("/myws")
+//@ServerEndpoint("/myws")
 public class WebSocketServiceImpl implements WebSocketService {
     /**
      * 在线人数  //使用原子类AtomicInteger, --->  static并发会产生线程安全问题，    //public  static Integer onlineNumber = 0;
@@ -42,6 +45,11 @@ public class WebSocketServiceImpl implements WebSocketService {
      * 所有用户信息(session + userId + username + createTime  --> 以用户的id为key, 通过用户key来获取用户session进行消息发送)
      */
     public static Map<String, OnlineUser> clients = new ConcurrentHashMap<>();
+
+//    private static String dir="/user/{}";
+
+    @Resource
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Resource
     private RoomMapper roomMapper;
@@ -113,16 +121,18 @@ public class WebSocketServiceImpl implements WebSocketService {
      * 消息发送（ 遍历用户Id , 在通过sendMsg方法发送消息）
      *
      * @param chatMessageDTO：消息内容
+     * 订阅方式：/chatRoom/{uid}
+     *
      */
-    private void send(ChatMessageDTO chatMessageDTO) {
+    public void send(ChatMessageDTO chatMessageDTO) {
 
 //        ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
         ChatUserExample example = new ChatUserExample();
         example.createCriteria().andChatidEqualTo(chatMessageDTO.getTargetChatId());
         List<ChatUser> result = chatUserMapper.selectByExample(example);
         for(ChatUser chatUser: result){
-            if(chatUser.getUserid() != null && clients.containsKey(chatUser.getUserid())){
-                clients.get(chatUser.getUserid()).getSession().getAsyncRemote().sendText(JSON.toJSONString(chatMessageDTO));
+            if(chatUser.getUserid() != null){
+                simpMessagingTemplate.convertAndSendToUser(String.valueOf(chatUser.getUserid()),"",chatMessageDTO);
             }
         }
     }

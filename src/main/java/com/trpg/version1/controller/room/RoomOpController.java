@@ -1,6 +1,7 @@
 package com.trpg.version1.controller.room;
 
 import com.trpg.version1.common.JsonMessage;
+import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.entity.Room;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.Impl.WebSocketServiceImpl;
@@ -10,9 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.security.Principal;
@@ -24,24 +23,30 @@ public class RoomOpController {
     @Resource
     WebSocketService webSocketService;
 
-    @RequestMapping(value = "/room/create/{uid}")
+    @RequestMapping(value = "/room/create/{uid}", method = RequestMethod.POST)
     public JsonMessage<RoomVO> createRoom(@PathVariable("uid") String uid, Room room){
         return new JsonMessage(webSocketService.createRoom(uid,room));
     }
 
-    @RequestMapping(value = "/room/delete/{uid}/{rid}")
+    @RequestMapping(value = "/room/delete/{uid}/{rid}", method = RequestMethod.DELETE)
     public JsonMessage<RoomVO> deleteRoom(@PathVariable("uid") String uid, @PathVariable("rid") Integer rid){
         return new JsonMessage(webSocketService.deleteRoom(uid,rid));
     }
 
-    @RequestMapping(value = "/room/enter/{uid}/{rid}")
+    @RequestMapping(value = "/room/enter/{uid}/{rid}", method = RequestMethod.GET)
     public JsonMessage<RoomVO> enterRoom(@PathVariable("uid") Integer uid, @PathVariable("rid") Integer rid){
         return new JsonMessage(webSocketService.enterRoom(uid,rid));
     }
 
-    @RequestMapping(value = "/room/delete/{rid}")
+    @RequestMapping(value = "/room/delete/{rid}", method = RequestMethod.GET)
     public JsonMessage<RoomVO> createRoom(@PathVariable("rid") Integer rid){
         return new JsonMessage(webSocketService.getOnlineUsersList(rid));
+    }
+
+    @MessageMapping("/send")
+    public JsonMessage<String> sendMessage(@RequestBody ChatMessageDTO chatMessageDTO){
+        webSocketService.send(chatMessageDTO);
+        return new JsonMessage<>("发送成功");
     }
 
 

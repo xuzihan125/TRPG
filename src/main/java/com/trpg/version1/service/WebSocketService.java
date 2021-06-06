@@ -1,6 +1,7 @@
 package com.trpg.version1.service;
 
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
+import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.ChatUserDTO;
 import com.trpg.version1.mybatis.entity.Room;
 import com.trpg.version1.mybatis.vo.RoomVO;
@@ -81,6 +82,7 @@ public interface WebSocketService {
     public void onMessage(@PathParam("userId") String userId, String message, Session session);
 
 
+    public void send(ChatMessageDTO chatMessageDTO);
 
     //================================================================================
     //================================================================================

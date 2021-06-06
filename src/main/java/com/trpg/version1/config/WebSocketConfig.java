@@ -27,7 +27,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 在网页上我们就可以通过这个链接 /ws ==<c:url value='/ws'></span> 来和服务器的WebSocket连接
         // 创建连接url
-        registry.addEndpoint("/ws").withSockJS();
+        registry.addEndpoint("/chatRoom").withSockJS();
     }
 
 //    /**
@@ -50,7 +50,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // js.url = "/app/hello" -> @MessageMapping("/hello") 注释的方法.
         registry.enableSimpleBroker("/topic");               //设置服务器广播消息的基础路径
         registry.setApplicationDestinationPrefixes("/app");  //设置客户端订阅消息的基础路径
-        registry.setPathMatcher(new AntPathMatcher("."));    //可以已“.”来分割路径，看看类级别的@messageMapping和方法级别的@messageMapping
+//        registry.setPathMatcher(new AntPathMatcher("."));    //可以已“.”来分割路径，看看类级别的@messageMapping和方法级别的@messageMapping
     }
 
 }
