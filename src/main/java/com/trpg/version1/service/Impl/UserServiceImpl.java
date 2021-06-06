@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setEmail(email);
         userDTO.setNickname(user.getNickname());
         userDTO.setPhone(user.getPhone());
-        loginVO.setToken(jwtUtil.generateJWT(userDTO));
+        loginVO = new LoginVO(user.getNickname(),jwtUtil.generateJWT(userDTO),user.getEmail(),user.getUserid());
         return loginVO;
     }
 
