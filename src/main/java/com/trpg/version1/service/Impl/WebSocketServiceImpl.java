@@ -137,6 +137,10 @@ public class WebSocketServiceImpl implements WebSocketService {
         }
     }
 
+    public void sendTest(ChatMessageDTO chatMessageDTO) {
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(chatMessageDTO.getSenderUid()),"",chatMessageDTO);
+    }
+
 
 //    /**
 //     * 消息发送(最后发送, 在send方法中循环用户Id 列表依次发送消息给指定人)

@@ -49,6 +49,11 @@ public class RoomOpController {
         return new JsonMessage<>("发送成功");
     }
 
+    @MessageMapping("/test")
+    public JsonMessage<String> sendMessageTest(ChatMessageDTO chatMessageDTO){
+        webSocketService.sendTest(chatMessageDTO);
+        return new JsonMessage<>("发送成功");
+    }
 
 //    /**
 //     * 精准推送

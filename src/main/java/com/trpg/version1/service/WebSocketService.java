@@ -84,6 +84,8 @@ public interface WebSocketService {
 
     public void send(ChatMessageDTO chatMessageDTO);
 
+    public void sendTest(ChatMessageDTO ChatMessageDTO);
+
     //================================================================================
     //================================================================================
     //=======================  service方法(http接口调用操作) ============================
