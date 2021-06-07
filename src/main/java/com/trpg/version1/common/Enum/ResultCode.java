@@ -20,6 +20,7 @@ public enum ResultCode {
     WRONGFORMAT_NICKNAME("010012", "昵称长度必须在6到32之间"),
     EMPTY_WECHATID("010013", "微信号不能为空"),
     EMPTY_DESCRI("010014", "描述不能为空"),
+    EMPTY_UID("010015", "userId不能为空"),
     //02:账号
     EMAIL_ALREADY_EXIST("020001","邮箱已存在"),
     TOKENERROR("020002","token错误"),

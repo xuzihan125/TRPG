@@ -10,6 +10,7 @@ import lombok.Data;
  */
 @Data
 public class UserModifyVO {
+    private Integer uid;
     private String email;
     private String phone;
     private String nickname;

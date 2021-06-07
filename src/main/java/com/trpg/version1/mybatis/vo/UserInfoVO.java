@@ -1,8 +1,10 @@
 package com.trpg.version1.mybatis.vo;
 
+import com.trpg.version1.mybatis.entity.Charact;
 import com.trpg.version1.mybatis.entity.CommentUser;
 import lombok.Data;
 
+import javax.xml.stream.events.Characters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,8 @@ public class UserInfoVO {
     private String nickname;
     private String descri;
     private Integer avgscore;
-    private List<CommentUser> commentUserList = new ArrayList<CommentUser>();
-    private List<Map<String, String>> characterList = new ArrayList<Map<String, String>>();
+    private List<CommentUser> commentUserList;
+    private Integer commentUserNum;
+    private List<Charact> characterList;
+    private Integer characterNum;
 }

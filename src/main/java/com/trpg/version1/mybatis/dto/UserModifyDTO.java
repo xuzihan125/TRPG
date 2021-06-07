@@ -17,6 +17,9 @@ public class UserModifyDTO {
     //WRONGFORMAT_NICKNAME("010012", "昵称长度必须在6到32之间"),
     //EMPTY_WECHATID("010013", "微信号不能为空"),
     //EMPTY_DESCRI("010014", "描述不能为空"),
+    @NotEmpty(message = "010015")
+    private Integer uid;
+
     @NotEmpty(message = "010003")
     @Email(message = "010006")
     private String email;

@@ -120,26 +120,29 @@ public class UserServiceImpl implements UserService {
         if(StringUtil.isEmpty(userModifyDTO)){
             throw new OpException(ResultCode.INVALID_ATTRIBUTE.getCode(),ResultCode.INVALID_ATTRIBUTE.getDesc());
         }
-        String email = userModifyDTO.getEmail();
-        String phone = userModifyDTO.getPhone();
-        String nickname = userModifyDTO.getNickname();
-        String wechatid = userModifyDTO.getWechatid();
-        String descri = userModifyDTO.getDescri();
+        SysUserExample example = new SysUserExample();
+        example.createCriteria().andEmailEqualTo(userModifyDTO.getEmail());
+        if (sysUserMapper.countByExample(example)>0){
+            throw new OpException(ResultCode.EMAIL_ALREADY_EXIST.getCode(),ResultCode.EMAIL_ALREADY_EXIST.getDesc());
+        }
         //校验信息
         SysUser user = new SysUser();
-        user.setPhone(phone);
-        user.setNickname(nickname);
-        user.setWechatid(wechatid);
-        user.setDescri(descri);
-        SysUserExample example = new SysUserExample();
-        example.createCriteria().andEmailEqualTo(email);
+        user.setEmail(userModifyDTO.getEmail());
+        user.setUserid(userModifyDTO.getUid());
+        user.setPhone(userModifyDTO.getPhone());
+        user.setNickname(userModifyDTO.getNickname());
+        user.setWechatid(userModifyDTO.getWechatid());
+        user.setDescri(userModifyDTO.getDescri());
+
+        example.createCriteria().andUseridEqualTo(userModifyDTO.getUid());
         sysUserMapper.updateByExampleSelective(user, example);
         //构造返回值
-        userModifyVO.setDescri(descri);
-        userModifyVO.setEmail(email);
-        userModifyVO.setNickname(nickname);
-        userModifyVO.setPhone(phone);
-        userModifyVO.setWechatid(wechatid);
+        userModifyVO.setEmail(userModifyDTO.getEmail());
+        userModifyVO.setUid(userModifyDTO.getUid());
+        userModifyVO.setPhone(userModifyDTO.getPhone());
+        userModifyVO.setNickname(userModifyDTO.getNickname());
+        userModifyVO.setWechatid(userModifyDTO.getWechatid());
+        userModifyVO.setDescri(userModifyDTO.getDescri());
         return userModifyVO;
     }
 
@@ -177,6 +180,7 @@ public class UserServiceImpl implements UserService {
             sum += commentUser.getScore();
         }
         userInfoVO.setAvgscore(commentUserList.size() == 0 ? 0 : sum / commentUserList.size());
+        userInfoVO.setCommentUserNum(commentUserList.size());
 
         //根据id查询出对应的角色列表
         CharactExample characterExample = new CharactExample();
@@ -202,7 +206,8 @@ public class UserServiceImpl implements UserService {
             }
             characterDescriptionOfUserList.add(attributes);
         }
-        userInfoVO.setCharacterList(characterDescriptionOfUserList);
+        userInfoVO.setCharacterList(characters);
+        userInfoVO.setCharacterNum(characters.size());
         return userInfoVO;
     }
 
