@@ -15,6 +15,8 @@ import com.trpg.version1.mybatis.dto.ChatUserDTO;
 import com.trpg.version1.mybatis.entity.*;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.WebSocketService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,7 @@ import java.util.stream.Collectors;
  * @data 2021/5/29
  **/
 @Service
-//@ServerEndpoint("/myws")
+//@ServerEndpoint("/chatRoom")
 public class WebSocketServiceImpl implements WebSocketService {
     /**
      * 在线人数  //使用原子类AtomicInteger, --->  static并发会产生线程安全问题，    //public  static Integer onlineNumber = 0;
@@ -49,6 +51,7 @@ public class WebSocketServiceImpl implements WebSocketService {
 
 //    private static String dir="/user/{}";
 
+    public static Logger logger = LoggerFactory.getLogger(WebSocketServiceImpl.class);
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
@@ -77,45 +80,41 @@ public class WebSocketServiceImpl implements WebSocketService {
     //===============================  监听方法 =======================================
     //================================================================================
     //================================================================================
-
+//
 //    /**
 //     * TODO  监听连接（有用户连接，立马到来执行这个方法），session 发生变化
 //     */
 //    @OnOpen
-//    public void onOpen(@PathParam("userId") String uid, Session session) {
+//    public void onOpen(Session session) {
 //        // 保存新用户id,用户名,session会话,登录时间
-//        clients.put(uid, new OnlineUser(uid, session));
+//        logger.info("建立监听");
 //    }
-
-
+//
+//
 //    /**
 //     * TODO  监听断开连接（有用户退出，会立马到来执行这个方法）
 //     */
 //    @OnClose
-//    public void onClose(@PathParam("userId") String userId, Session session) {
+//    public void onClose(Session session) {
 //        // 所有在线用户中去除下线用户
-//        clients.remove(userId);
+//        logger.info("断开监听");
 //    }
-
+//
 //    /**
 //     * TODO 异常停止
 //     */
 //    @OnError
-//    public void onError(@PathParam("userId") String userId, Session session, Throwable error) {
-//        error.printStackTrace();
-//        clients.remove(userId);
+//    public void onError(Session session, Throwable error) {
+//        logger.info("异常停止");
 //    }
-
-    /**
-     * TODO 监听消息发送（收到客户端的消息立即执行）
-     */
-    @OnMessage
-    public void onMessage(@PathParam("userId") String userId, String message, Session session) {
-        // 请求参数（接收人+发送内容）
-        ChatMessageDTO chatMessageDTO = (ChatMessageDTO)JSON.parseObject(message).clone();
-        // 发送消息
-        this.send(chatMessageDTO);
-    }
+//
+//    /**
+//     * TODO 监听消息发送（收到客户端的消息立即执行）
+//     */
+//    @OnMessage
+//    public void onMessage(@PathParam("userId") String userId, String message, Session session) {
+//        logger.info("收到信息");
+//    }
 
 
     /**
@@ -133,13 +132,13 @@ public class WebSocketServiceImpl implements WebSocketService {
         List<ChatUser> result = chatUserMapper.selectByExample(example);
         for(ChatUser chatUser: result){
             if(chatUser.getUserid() != null){
-                simpMessagingTemplate.convertAndSendToUser(String.valueOf(chatUser.getUserid()),"",chatMessageDTO);
+                simpMessagingTemplate.convertAndSend("/topic/"+String.valueOf(chatUser.getUserid()),chatMessageDTO);
             }
         }
     }
 
     public void sendTest(ChatMessageDTO chatMessageDTO) {
-        simpMessagingTemplate.convertAndSendToUser(String.valueOf(chatMessageDTO.getSenderUid()),"",chatMessageDTO);
+        simpMessagingTemplate.convertAndSend("/topic/"+String.valueOf(chatMessageDTO.getSenderUid()),chatMessageDTO);
     }
 
 

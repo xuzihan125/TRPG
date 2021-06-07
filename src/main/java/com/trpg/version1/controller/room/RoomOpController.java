@@ -12,7 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +24,13 @@ import java.security.Principal;
 
 @Api(value = "房间操作")
 @RestController
-@MessageMapping("foo")
+//@MessageMapping("foo")
 public class RoomOpController {
 
     private Logger logger = LoggerFactory.getLogger(RoomOpController.class);
+
+    @Resource
+    SimpMessagingTemplate simpMessagingTemplate;
 
     @Resource
     WebSocketService webSocketService;
@@ -61,6 +66,12 @@ public class RoomOpController {
         logger.info(chatMessageDTO.getContent());
         webSocketService.sendTest(chatMessageDTO);
         return new JsonMessage<>("发送成功");
+    }
+
+    @Scheduled(fixedRate = 5000)
+    public void sendMessage(){
+        logger.info("发送信息");
+        simpMessagingTemplate.convertAndSend("/topic/1","后端发送信息-测试");
     }
 
 //    /**

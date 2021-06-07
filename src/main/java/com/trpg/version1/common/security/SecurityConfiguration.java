@@ -6,6 +6,7 @@ import com.trpg.version1.common.Enum.RoleEnum;
 import com.trpg.version1.common.security.JWT.AuthEntryPointJwt;
 import com.trpg.version1.common.security.JWT.AuthTokenFilter;
 import com.trpg.version1.common.security.JWT.JWTAccessDenied;
+import com.trpg.version1.common.security.stomp.UserInterceptor;
 import com.trpg.version1.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -104,6 +105,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
+
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         //swagger2所需要用到的静态资源，允许访问
@@ -128,5 +131,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
         return source;
+    }
+
+    @Bean
+    public UserInterceptor createUserInterceptor() {
+        return new UserInterceptor();
     }
 }
