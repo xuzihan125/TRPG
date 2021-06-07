@@ -27,7 +27,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 在网页上我们就可以通过这个链接 /ws ==<c:url value='/ws'></span> 来和服务器的WebSocket连接
         // 创建连接url
-        registry.addEndpoint("/chatRoom").withSockJS();
+        registry.addEndpoint("/chatRoom").setAllowedOriginPatterns("*").withSockJS();
     }
 
 //    /**

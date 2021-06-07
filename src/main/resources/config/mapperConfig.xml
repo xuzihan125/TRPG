@@ -49,6 +49,7 @@
 
         <table tableName="charact" domainObjectName = "Charact"  enableCountByExample="true" >
 
+        </table>
         <table tableName="room" domainObjectName = "Room"  enableCountByExample="true" >
             <generatedKey column="roomId" sqlStatement="MySql" identity="true" />
         </table>

@@ -15,6 +15,7 @@ import com.trpg.version1.mybatis.dto.ChatUserDTO;
 import com.trpg.version1.mybatis.entity.*;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.WebSocketService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,7 @@ public class WebSocketServiceImpl implements WebSocketService {
     /**
      * 所有用户信息(session + userId + username + createTime  --> 以用户的id为key, 通过用户key来获取用户session进行消息发送)
      */
-    public static Map<String, OnlineUser> clients = new ConcurrentHashMap<>();
+//    public static Map<String, OnlineUser> clients = new ConcurrentHashMap<>();
 
 //    private static String dir="/user/{}";
 
@@ -77,33 +78,33 @@ public class WebSocketServiceImpl implements WebSocketService {
     //================================================================================
     //================================================================================
 
-    /**
-     * TODO  监听连接（有用户连接，立马到来执行这个方法），session 发生变化
-     */
-    @OnOpen
-    public void onOpen(@PathParam("userId") String uid, Session session) {
-        // 保存新用户id,用户名,session会话,登录时间
-        clients.put(uid, new OnlineUser(uid, session));
-    }
+//    /**
+//     * TODO  监听连接（有用户连接，立马到来执行这个方法），session 发生变化
+//     */
+//    @OnOpen
+//    public void onOpen(@PathParam("userId") String uid, Session session) {
+//        // 保存新用户id,用户名,session会话,登录时间
+//        clients.put(uid, new OnlineUser(uid, session));
+//    }
 
 
-    /**
-     * TODO  监听断开连接（有用户退出，会立马到来执行这个方法）
-     */
-    @OnClose
-    public void onClose(@PathParam("userId") String userId, Session session) {
-        // 所有在线用户中去除下线用户
-        clients.remove(userId);
-    }
+//    /**
+//     * TODO  监听断开连接（有用户退出，会立马到来执行这个方法）
+//     */
+//    @OnClose
+//    public void onClose(@PathParam("userId") String userId, Session session) {
+//        // 所有在线用户中去除下线用户
+//        clients.remove(userId);
+//    }
 
-    /**
-     * TODO 异常停止
-     */
-    @OnError
-    public void onError(@PathParam("userId") String userId, Session session, Throwable error) {
-        error.printStackTrace();
-        clients.remove(userId);
-    }
+//    /**
+//     * TODO 异常停止
+//     */
+//    @OnError
+//    public void onError(@PathParam("userId") String userId, Session session, Throwable error) {
+//        error.printStackTrace();
+//        clients.remove(userId);
+//    }
 
     /**
      * TODO 监听消息发送（收到客户端的消息立即执行）
@@ -158,22 +159,22 @@ public class WebSocketServiceImpl implements WebSocketService {
 //        }
 //    }
 
-    /**
-     * 获取当前在线列表
-     * <p>
-     * 获取当前在线列表, 把onlineUsers 转到 OnlineUsersVO返回
-     * </p>
-     *
-     * @return
-     */
-    public synchronized List<ChatUserDTO> getOnlineUsers() {
-        List<ChatUserDTO> onlineUsersVOList = new ArrayList<>();
-        for (OnlineUser onlineUsers : clients.values()) {
-            ChatUserDTO chatUserDTO = new ChatUserDTO(); // onlineUsers 转化
-            onlineUsersVOList.add(chatUserDTO);
-        }
-        return onlineUsersVOList;
-    }
+//    /**
+//     * 获取当前在线列表
+//     * <p>
+//     * 获取当前在线列表, 把onlineUsers 转到 OnlineUsersVO返回
+//     * </p>
+//     *
+//     * @return
+//     */
+//    public synchronized List<ChatUserDTO> getOnlineUsers() {
+//        List<ChatUserDTO> onlineUsersVOList = new ArrayList<>();
+//        for (OnlineUser onlineUsers : clients.values()) {
+//            ChatUserDTO chatUserDTO = new ChatUserDTO(); // onlineUsers 转化
+//            onlineUsersVOList.add(chatUserDTO);
+//        }
+//        return onlineUsersVOList;
+//    }
 
 
     //================================================================================
@@ -182,8 +183,11 @@ public class WebSocketServiceImpl implements WebSocketService {
     //================================================================================
     //================================================================================
 
-    public RoomVO createRoom(String uid, Room room){
+    public RoomVO createRoom(String uid, Room room1){
         //创建房间
+
+        Room room = new Room();
+        BeanUtils.copyProperties(room1,room);
         int rid = roomMapper.insert(room);
         //创建人员等级
         RoomUser roomUser = new RoomUser();

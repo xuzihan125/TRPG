@@ -33,34 +33,34 @@ public interface WebSocketService {
     //================================================================================
     //================================================================================
 
-    /**
-     * TODO  监听连接（有用户连接，立马到来执行这个方法），session 发生变化
-     *
-     * @param userId   用户id
-     * @param session  当前用户会话
-     * @return void
-     * @date 2020/6/30 0030 9:28
-     */
-    public void onOpen(@PathParam("userId") String userId, Session session);
-
-
-    /**
-     * TODO  监听断开连接（有用户退出，会立马到来执行这个方法）
-     *
-     * @param userId   用户id
-     * @param session  当前用户会话
-     */
-    public void onClose(@PathParam("userId") String userId, Session session);
-
-
-    /**
-     * TODO 异常停止
-     *
-     * @param userId   用户id
-     * @param session  当前用户会话
-     * @param error    异常信息
-     */
-    public void onError(@PathParam("userId") String userId, Session session, Throwable error);
+//    /**
+//     * TODO  监听连接（有用户连接，立马到来执行这个方法），session 发生变化
+//     *
+//     * @param userId   用户id
+//     * @param session  当前用户会话
+//     * @return void
+//     * @date 2020/6/30 0030 9:28
+//     */
+//    public void onOpen(@PathParam("userId") String userId, Session session);
+//
+//
+//    /**
+//     * TODO  监听断开连接（有用户退出，会立马到来执行这个方法）
+//     *
+//     * @param userId   用户id
+//     * @param session  当前用户会话
+//     */
+//    public void onClose(@PathParam("userId") String userId, Session session);
+//
+//
+//    /**
+//     * TODO 异常停止
+//     *
+//     * @param userId   用户id
+//     * @param session  当前用户会话
+//     * @param error    异常信息
+//     */
+//    public void onError(@PathParam("userId") String userId, Session session, Throwable error);
 
     /**
      * TODO 监听消息发送（收到客户端的消息立即执行）

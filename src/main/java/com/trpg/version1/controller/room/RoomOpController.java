@@ -2,6 +2,7 @@ package com.trpg.version1.controller.room;
 
 import com.trpg.version1.common.JsonMessage;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
+import com.trpg.version1.mybatis.dto.room.RoomCreateDTO;
 import com.trpg.version1.mybatis.entity.Room;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.Impl.WebSocketServiceImpl;
