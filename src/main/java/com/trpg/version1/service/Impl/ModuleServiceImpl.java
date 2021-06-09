@@ -61,6 +61,7 @@ public class ModuleServiceImpl implements ModuleService {
         module.setRuletype(moduleUploadDTO.getRule_type());
         module.setTimebackground(moduleUploadDTO.getTime_background());
         module.setPlacebackground(moduleUploadDTO.getPlace_background());
+        module.setTimepublish(moduleUploadDTO.getTimePublish());
         module.setRecommendpeople(moduleUploadDTO.getRecommend_people());
         module.setFileurl(moduleUploadDTO.getPic_path());
         module.setState(0);
