@@ -27,7 +27,7 @@ public class ModuleUploadDTO {
     private String name;
 
     @NotEmpty(message = "010017")
-    private String Desc;
+    private String descri;
 
     private List<Integer> label;
 
@@ -54,4 +54,7 @@ public class ModuleUploadDTO {
 
     @NotEmpty(message = "010025")
     private String pic_path;
+
+    @NotEmpty(message = "010026")
+    private String timePublish;
 }

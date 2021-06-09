@@ -40,7 +40,7 @@ public class ModuleServiceImpl implements ModuleService {
             List<SysUser> users = sysUserMapper.selectByExample(sysUserExample);
             SysUser user = users.stream().findFirst().orElse(null);
             if(user == null){
-                throw new OpException(ResultCode.UNFROSEEN_ERROR.getCode(),ResultCode.UNFROSEEN_ERROR.getDesc());
+                throw new OpException(ResultCode.INVALID_ACCOUNT.getCode(),ResultCode.INVALID_ACCOUNT.getDesc());
             }
             moduleListVO.setAuthor(user.getNickname());
             moduleListVO.setAuthor("author");
@@ -54,7 +54,7 @@ public class ModuleServiceImpl implements ModuleService {
         Module module = new Module();
         module.setUserid(moduleUploadDTO.getUid());
         module.setName(moduleUploadDTO.getName());
-        module.setDescri(moduleUploadDTO.getDesc());
+        module.setDescri(moduleUploadDTO.getDescri());
         module.setType(moduleUploadDTO.getType());
         module.setShorttime(moduleUploadDTO.getShort_time());
         module.setLongtime(moduleUploadDTO.getLong_time());
@@ -63,6 +63,7 @@ public class ModuleServiceImpl implements ModuleService {
         module.setPlacebackground(moduleUploadDTO.getPlace_background());
         module.setRecommendpeople(moduleUploadDTO.getRecommend_people());
         module.setFileurl(moduleUploadDTO.getPic_path());
+        module.setState(0);
 
         ModuleExample moduleExample = new ModuleExample();
         moduleExample.createCriteria().andNameEqualTo(moduleUploadDTO.getName());
@@ -75,16 +76,18 @@ public class ModuleServiceImpl implements ModuleService {
         List<Module> moduleList = moduleMapper.selectByExample(moduleExample);
         Module mod = moduleList.stream().findFirst().orElse(null);
         if(mod == null){
-            throw new OpException(ResultCode.UNFROSEEN_ERROR.getCode(),ResultCode.UNFROSEEN_ERROR.getDesc());
+            throw new OpException(ResultCode.INVALID_ACCOUNT.getCode(),ResultCode.INVALID_ACCOUNT.getDesc());
         }
         int mid = mod.getMid();
 
         List<Integer> labelIds = moduleUploadDTO.getLabel();
-        for(int labelId : labelIds){
-            LabelModule labelModule = new LabelModule();
-            labelModule.setLabelid(labelId);
-            labelModule.setMid(mid);
-            labelModuleMapper.insert(labelModule);
+        if(labelIds != null){
+            for(int labelId : labelIds){
+                LabelModule labelModule = new LabelModule();
+                labelModule.setLabelid(labelId);
+                labelModule.setMid(mid);
+                labelModuleMapper.insert(labelModule);
+            }
         }
         return "上传模组成功";
     }
