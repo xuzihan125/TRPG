@@ -38,7 +38,7 @@ public class UserController {
 
     @ApiOperation(value = "方法描述:用户注册,请求方式:POST,参数:UserDTO,返回值:JsonMessage<String>,是否可用:ok")
     @RequestMapping(value = "/auth/register",method = RequestMethod.POST)
-    public JsonMessage<String> createUserService(@Valid @RequestBody UserDTO userDTO, BindingResult userCheckResult){
+    public JsonMessage<String> createUserService(@Valid UserDTO userDTO, BindingResult userCheckResult){
         if(userCheckResult.hasErrors()){
             //EMPTY_EMAIL("010003", "邮箱不能为空")
             //WRONGFORMAT_EMAIL("010006", "邮箱格式错误")

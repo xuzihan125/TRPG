@@ -15,18 +15,18 @@
                         userId="${spring.datasource.username}"
                         password="${spring.datasource.password}">
         </jdbcConnection>
-        <javaModelGenerator targetPackage="com.trpg.version1.mybatis.entity" targetProject="C:\Users\xuzih\Desktop\software_analysis\BP\version1\src\main\java">
+        <javaModelGenerator targetPackage="com.trpg.version1.mybatis.entity" targetProject="A:\TRPG\src\main\java">
             <property name="enableSubPackages" value="false" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
         <!-- targetProject:xml??????? -->
-        <sqlMapGenerator targetPackage="com.trpg.version1.mybatis.mapper" targetProject="C:\Users\xuzih\Desktop\software_analysis\BP\version1\src\main\java">
+        <sqlMapGenerator targetPackage="com.trpg.version1.mybatis.mapper" targetProject="A:\TRPG\src\main\java">
             <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
 
         <!-- targetPackage?mapper??????? -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.trpg.version1.mybatis.dao" targetProject="C:\Users\xuzih\Desktop\software_analysis\BP\version1\src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.trpg.version1.mybatis.dao" targetProject="A:\TRPG\src\main\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
@@ -47,20 +47,32 @@
 
         <!--</table>-->
 
-        <table tableName="charact" domainObjectName = "Charact"  enableCountByExample="true" >
+        <!--<table tableName="charact" domainObjectName = "Charact"  enableCountByExample="true" >-->
 
-        </table>
-        <table tableName="room" domainObjectName = "Room"  enableCountByExample="true" >
-            <generatedKey column="roomId" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="roomUser" domainObjectName = "RoomUser"  enableCountByExample="true" >
-<!--            <generatedKey column="roomId" sqlStatement="MySql" identity="true" />-->
-        </table>
-        <table tableName="chatGroupDTO" domainObjectName = "ChatGroup"  enableCountByExample="true" >
-            <generatedKey column="chatId" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="chatUser" domainObjectName = "ChatUser"  enableCountByExample="true" >
-<!--            <generatedKey column="chatId" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
+        <!--<table tableName="room" domainObjectName = "Room"  enableCountByExample="true" >-->
+            <!--<generatedKey column="roomId" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
+        <!--<table tableName="roomUser" domainObjectName = "RoomUser"  enableCountByExample="true" >-->
+<!--&lt;!&ndash;            <generatedKey column="roomId" sqlStatement="MySql" identity="true" />&ndash;&gt;-->
+        <!--</table>-->
+        <!--<table tableName="chatGroupDTO" domainObjectName = "ChatGroup"  enableCountByExample="true" >-->
+            <!--<generatedKey column="chatId" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
+        <!--<table tableName="chatUser" domainObjectName = "ChatUser"  enableCountByExample="true" >-->
+<!--&lt;!&ndash;            <generatedKey column="chatId" sqlStatement="MySql" identity="true" />&ndash;&gt;-->
+        <!--</table>-->
+
+        <!--<table tableName="labell" domainObjectName = "Label"  enableCountByExample="true" >-->
+            <!--<generatedKey column="labelId" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
+
+        <!--<table tableName="labelModule" domainObjectName = "LabelModule"  enableCountByExample="true" >-->
+
+        <!--</table>-->
+
+        <table tableName="modulle" domainObjectName = "Module"  enableCountByExample="true" >
+            <generatedKey column="mid" sqlStatement="MySql" identity="true" />
         </table>
 
         <!--<table tableName="description" domainObjectName = "Description"  enableCountByExample="true" >-->
