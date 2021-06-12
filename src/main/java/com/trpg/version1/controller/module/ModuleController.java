@@ -27,6 +27,7 @@ import java.util.List;
  **/
 @Api(value = "模组主页处理接口")
 @RestController
+@CrossOrigin
 public class ModuleController {
     @Resource
     private ModuleService moduleService;
