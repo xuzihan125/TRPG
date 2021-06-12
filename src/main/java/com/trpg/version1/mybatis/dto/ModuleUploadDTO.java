@@ -60,8 +60,8 @@ public class ModuleUploadDTO {
     private String timePublish;
 
     @NotEmpty(message = "050002")
-    private MultipartFile[] pic;
+    private MultipartFile pic;
 
     @NotEmpty(message = "050002")
-    private MultipartFile[] file;
+    private MultipartFile file;
 }
