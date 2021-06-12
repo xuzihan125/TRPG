@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ModuleService {
+    ModuleListVO getModule(Integer mid);
+
     List<ModuleListVO> ModuleList();
 
     String moduleUpload(ModuleUploadDTO moduleUploadDTO);

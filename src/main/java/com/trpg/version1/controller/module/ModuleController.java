@@ -38,6 +38,12 @@ public class ModuleController {
         return new JsonMessage<List<ModuleListVO>>(moduleService.ModuleList());
     }
 
+    @ApiOperation(value = "方法描述:获得模组列表,请求方式:GET,参数:null,返回值:JsonMessage<List<ModuleListVO>>,是否可用:yes")
+    @RequestMapping(value = "/module/get/{mid}",method = RequestMethod.GET)
+    public JsonMessage<ModuleListVO> getModuleList(@PathVariable("mid") Integer mid){
+        return new JsonMessage<ModuleListVO>(moduleService.getModule(mid));
+    }
+
     @ApiOperation(value = "方法描述:上传模组,请求方式:GET,参数:,返回值:JsonMessage<String>,是否可用:yes")
     @RequestMapping(value = "/module/upload",method = RequestMethod.POST)
     public JsonMessage<String> moduleUpload(@RequestBody @Valid ModuleUploadDTO moduleUploadDTO, BindingResult bindingResult){

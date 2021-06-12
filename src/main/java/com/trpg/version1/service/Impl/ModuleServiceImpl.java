@@ -56,6 +56,22 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
+    public ModuleListVO getModule(Integer mid) {
+        ModuleExample moduleExample = new ModuleExample();
+        moduleExample.createCriteria().andMidEqualTo(mid);
+        List<Module> moduleList = moduleMapper.selectByExample(moduleExample);
+        Module module = moduleList.stream().findFirst().orElse(null);
+        ModuleListVO moduleListVO = new ModuleListVO(module);
+        int uid = module.getUserid();
+        SysUserExample sysUserExample = new SysUserExample();
+        sysUserExample.createCriteria().andUseridEqualTo(uid);
+        List<SysUser> users = sysUserMapper.selectByExample(sysUserExample);
+        SysUser user = users.stream().findFirst().orElse(null);
+        moduleListVO.setAuthor(user.getNickname());
+        return moduleListVO;
+    }
+
+    @Override
     public String moduleUpload(ModuleUploadDTO moduleUploadDTO) {
         Module module = new Module();
         module.setUserid(moduleUploadDTO.getUid());
