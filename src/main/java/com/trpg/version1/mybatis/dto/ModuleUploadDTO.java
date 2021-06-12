@@ -1,6 +1,7 @@
 package com.trpg.version1.mybatis.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ModuleUploadDTO {
     private Integer uid;
 
     @NotEmpty(message = "010016")
-    private String name;
+        private String name;
 
     @NotEmpty(message = "010017")
     private String descri;
@@ -57,4 +58,10 @@ public class ModuleUploadDTO {
 
     @NotEmpty(message = "010026")
     private String timePublish;
+
+    @NotEmpty(message = "050002")
+    private MultipartFile[] pic;
+
+    @NotEmpty(message = "050002")
+    private MultipartFile[] file;
 }

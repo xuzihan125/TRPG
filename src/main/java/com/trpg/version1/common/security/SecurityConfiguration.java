@@ -100,7 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 //                    .logoutSuccessUrl("/login").permitAll()
 //                    .permitAll()
                 .and()
-//                .cors().and()
+                .cors().and()
                     .csrf().disable();
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
@@ -137,4 +137,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     public UserInterceptor createUserInterceptor() {
         return new UserInterceptor();
     }
+
+
 }

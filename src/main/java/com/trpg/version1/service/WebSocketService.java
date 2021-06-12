@@ -5,6 +5,7 @@ import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.ChatUserDTO;
 import com.trpg.version1.mybatis.entity.ChatGroup;
 import com.trpg.version1.mybatis.entity.Room;
+import com.trpg.version1.mybatis.entity.SysUser;
 import com.trpg.version1.mybatis.vo.RoomVO;
 
 import javax.websocket.Session;
@@ -100,6 +101,8 @@ public interface WebSocketService {
     public Integer createChatGroup(ChatGroupDTO chatGroupDTO, Integer uid);
 
     public Integer enterRoom(Integer uid,Integer rid);
+
+    public List<SysUser> getChatPeople(Integer chatId);
 
     public List<ChatGroup> getChatGroupList(List<Integer> chatGroupId);
 

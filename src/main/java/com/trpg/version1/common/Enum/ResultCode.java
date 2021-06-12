@@ -33,6 +33,7 @@ public enum ResultCode {
     EMPTY_MODULE_PIC_PATH("010025", "图片路径不能为空"),
     EXIST_MODULE_NAME("010026", "该模组名称已被使用"),
     EMPTY_PUBLISH_TIME("010027", "模组上传时间不可为空"),
+    EMPTY_CHATROOM_ID("010028", "聊天组id不可为空"),
     //02:账号
     EMAIL_ALREADY_EXIST("020001","邮箱已存在"),
     TOKENERROR("020002","token错误"),

@@ -1,9 +1,13 @@
 package com.trpg.version1.controller.room;
 
+import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.JsonMessage;
+import com.trpg.version1.common.exception.OpException;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
+import com.trpg.version1.mybatis.dto.UserDTO;
 import com.trpg.version1.mybatis.dto.room.RoomCreateDTO;
 import com.trpg.version1.mybatis.entity.Room;
+import com.trpg.version1.mybatis.entity.SysUser;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.Impl.WebSocketServiceImpl;
 import com.trpg.version1.service.WebSocketService;
@@ -57,8 +61,16 @@ public class RoomOpController {
     }
 
     @RequestMapping(value = "/room/getChatGroup", method = RequestMethod.POST)
-    public JsonMessage<RoomVO> createRoom(@RequestBody List<Integer> chatId){
+    public JsonMessage<RoomVO> getChatGroup(@RequestBody List<Integer> chatId){
         return new JsonMessage(webSocketService.getChatGroupList(chatId));
+    }
+
+    @RequestMapping(value = "/room/getChatPeople/{chatid}",method = RequestMethod.GET)
+    public JsonMessage<List<SysUser>> getChatPeople(@PathVariable("chatid") Integer chatId){
+        if(chatId == null){
+            throw new OpException(ResultCode.EMPTY_CHATROOM_ID.getCode(),ResultCode.EMPTY_CHATROOM_ID.getDesc());
+        }
+        return new JsonMessage(webSocketService.getChatPeople(chatId));
     }
 
     @MessageMapping("/send")

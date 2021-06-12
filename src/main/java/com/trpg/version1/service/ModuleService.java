@@ -11,5 +11,5 @@ import java.util.List;
 public interface ModuleService {
     List<ModuleListVO> ModuleList();
 
-    String moduleUpload(ModuleUploadDTO moduleUploadDTO, MultipartFile[] files, MultipartFile[] pics);
+    String moduleUpload(ModuleUploadDTO moduleUploadDTO);
 }

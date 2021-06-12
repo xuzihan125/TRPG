@@ -5,10 +5,7 @@ import com.sun.javafx.binding.StringFormatter;
 import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.Enum.RoomRoleEnum;
 import com.trpg.version1.common.exception.OpException;
-import com.trpg.version1.mybatis.dao.ChatGroupMapper;
-import com.trpg.version1.mybatis.dao.ChatUserMapper;
-import com.trpg.version1.mybatis.dao.RoomMapper;
-import com.trpg.version1.mybatis.dao.RoomUserMapper;
+import com.trpg.version1.mybatis.dao.*;
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.ChatUserDTO;
@@ -66,6 +63,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private RoomUserMapper roomUserMapper;
+
+    @Resource
+    private SysUserMapper sysUserMapper;
 
 //    public static Map<String, List<String>> roomChat = new ConcurrentHashMap<>();
 //
@@ -300,6 +300,19 @@ public class WebSocketServiceImpl implements WebSocketService {
         roomUser.setLevel(RoomRoleEnum.HOST.getCode());
         roomUserMapper.insert(roomUser);
         return chatId;
+    }
+
+    @Override
+    public List<SysUser> getChatPeople(Integer chatId) {
+        ChatUserExample chatUserExample = new ChatUserExample();
+        chatUserExample.createCriteria().andChatidEqualTo(chatId);
+        List<ChatUser> entity = chatUserMapper.selectByExample(chatUserExample);
+        List<Integer> userId = new ArrayList<>();
+        entity.stream().forEach(e->userId.add(e.getUserid()));
+        SysUserExample sysUserExample = new SysUserExample();
+        sysUserExample.createCriteria().andUseridIn(userId);
+        List<SysUser> result = sysUserMapper.selectByExample(sysUserExample);
+        return result;
     }
 
     @Override

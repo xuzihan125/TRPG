@@ -56,8 +56,8 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public String moduleUpload(ModuleUploadDTO moduleUploadDTO, MultipartFile[] files, MultipartFile[] pics) {
-        if(files.length!=1 || pics.length!=1){
+    public String moduleUpload(ModuleUploadDTO moduleUploadDTO) {
+        if(moduleUploadDTO.getFile().length!=1 || moduleUploadDTO.getPic().length!=1){
             throw new OpException(ResultCode.INVALID_MODULE_FILE.getCode(),ResultCode.INVALID_MODULE_FILE.getDesc());
         }
 
@@ -96,9 +96,9 @@ public class ModuleServiceImpl implements ModuleService {
             }
         }
 
-        String moduleDir = fileService.uploadFile(files[0], String.valueOf(module.getMid()), FileType.MODULE);
+        String moduleDir = fileService.uploadFile(moduleUploadDTO.getFile()[0], String.valueOf(module.getMid()), FileType.MODULE);
         module.setFileurl(moduleDir);
-        String picDir = fileService.uploadFile(pics[0], String.valueOf(module.getMid()),FileType.COVER);
+        String picDir = fileService.uploadFile(moduleUploadDTO.getPic()[0], String.valueOf(module.getMid()),FileType.COVER);
         module.setCoverurl(picDir);
 
         ModuleExample example = new ModuleExample();
