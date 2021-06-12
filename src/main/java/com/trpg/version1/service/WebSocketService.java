@@ -3,6 +3,7 @@ package com.trpg.version1.service;
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.ChatUserDTO;
+import com.trpg.version1.mybatis.entity.ChatGroup;
 import com.trpg.version1.mybatis.entity.Room;
 import com.trpg.version1.mybatis.vo.RoomVO;
 
@@ -99,6 +100,8 @@ public interface WebSocketService {
     public Integer createChatGroup(ChatGroupDTO chatGroupDTO, Integer uid);
 
     public Integer enterRoom(Integer uid,Integer rid);
+
+    public List<ChatGroup> getChatGroupList(List<Integer> chatGroupId);
 
     /**
      * 获取当前在线用户列表

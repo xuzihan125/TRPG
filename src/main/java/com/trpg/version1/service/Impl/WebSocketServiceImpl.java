@@ -187,8 +187,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
         Room room = new Room();
         BeanUtils.copyProperties(room1,room);
-        int rid = roomMapper.insert(room);
-        //创建人员等级
+        roomMapper.insert(room);
+        int rid = room.getRoomid();
+                //创建人员等级
         RoomUser roomUser = new RoomUser();
         roomUser.setRoomid(rid);
         roomUser.setState(0);
@@ -196,12 +197,14 @@ public class WebSocketServiceImpl implements WebSocketService {
         roomUser.setLevel(RoomRoleEnum.HOST.getCode());
         roomUserMapper.insert(roomUser);
         //创建聊天窗口
-        com.trpg.version1.mybatis.entity.ChatGroup chatGroup = new com.trpg.version1.mybatis.entity.ChatGroup();
+        ChatGroup chatGroup = new ChatGroup();
         chatGroup.setFileurl(null);//// TODO: 2021/5/31
         chatGroup.setRoomid(rid);
         chatGroup.setState(0);
+        chatGroup.setType(0);
         chatGroup.setTitle("公共频道");
-        int chatId = chatGroupMapper.insert(chatGroup);
+        chatGroupMapper.insert(chatGroup);
+        int chatId = chatGroup.getChatid();
         //加入聊天组
         ChatUser chatUser = new ChatUser();
         chatUser.setState(0);
@@ -251,8 +254,10 @@ public class WebSocketServiceImpl implements WebSocketService {
         chatGroup.setFileurl(null);//// TODO: 2021/5/31
         chatGroup.setRoomid(chatGroupDTO.getRid());
         chatGroup.setState(0);
+        chatGroup.setType(1);
         chatGroup.setTitle("公共频道");
-        int chatId = chatGroupMapper.insert(chatGroup);
+        chatGroupMapper.insert(chatGroup);
+        int chatId = chatGroup.getChatid();
         //加入聊天组
         ChatUser chatUser = new ChatUser();
         chatUser.setState(0);
@@ -274,9 +279,9 @@ public class WebSocketServiceImpl implements WebSocketService {
         }
         //查找聊天窗口
         ChatGroupExample chatGroupExample = new ChatGroupExample();
-        chatGroupExample.createCriteria().andRoomidEqualTo(rid).andTypeEqualTo(1);
+        chatGroupExample.createCriteria().andRoomidEqualTo(rid);
         List<ChatGroup> result = chatGroupMapper.selectByExample(chatGroupExample);
-        ChatGroup chatGroup = result.stream().findFirst().orElse(null);
+        ChatGroup chatGroup = result.stream().filter(e-> e.getType()==0).findFirst().orElse(null);
         if(chatGroup==null){
             throw new OpException(ResultCode.INVALID_ATTRIBUTE.getCode(),ResultCode.INVALID_ATTRIBUTE.getDesc());
         }
@@ -295,6 +300,17 @@ public class WebSocketServiceImpl implements WebSocketService {
         roomUser.setLevel(RoomRoleEnum.HOST.getCode());
         roomUserMapper.insert(roomUser);
         return chatId;
+    }
+
+    @Override
+    public List<ChatGroup> getChatGroupList(List<Integer> chatGroupId) {
+        if(chatGroupId == null || chatGroupId.size() == 0){
+            throw new OpException(ResultCode.INVALID_INPUT.getCode(),ResultCode.INVALID_INPUT.getDesc());
+        }
+        ChatGroupExample example = new ChatGroupExample();
+        example.createCriteria().andChatidIn(chatGroupId);
+        List<ChatGroup> result = chatGroupMapper.selectByExample(example);
+        return result;
     }
 
 //    public String leaveRoom(String uid, String rid){

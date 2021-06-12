@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.security.Principal;
+import java.util.List;
 
 
 @Api(value = "房间操作")
@@ -55,6 +56,11 @@ public class RoomOpController {
         return new JsonMessage(webSocketService.getOnlineUsersList(rid));
     }
 
+    @RequestMapping(value = "/room/getChatGroup", method = RequestMethod.POST)
+    public JsonMessage<RoomVO> createRoom(@RequestBody List<Integer> chatId){
+        return new JsonMessage(webSocketService.getChatGroupList(chatId));
+    }
+
     @MessageMapping("/send")
     public JsonMessage<String> sendMessage(@RequestBody ChatMessageDTO chatMessageDTO){
         webSocketService.send(chatMessageDTO);
@@ -67,6 +73,7 @@ public class RoomOpController {
         webSocketService.sendTest(chatMessageDTO);
         return new JsonMessage<>("发送成功");
     }
+
 
     @Scheduled(fixedRate = 5000)
     public void sendMessage(){
