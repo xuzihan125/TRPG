@@ -3,9 +3,13 @@ package com.trpg.version1.service;
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.ChatUserDTO;
+import com.trpg.version1.mybatis.dto.room.CharacterStatusDTO;
+import com.trpg.version1.mybatis.dto.room.UserRoomCharacterDTO;
+import com.trpg.version1.mybatis.dto.room.UserRoomRoleDTO;
 import com.trpg.version1.mybatis.entity.ChatGroup;
 import com.trpg.version1.mybatis.entity.Room;
 import com.trpg.version1.mybatis.entity.SysUser;
+import com.trpg.version1.mybatis.vo.RoomUserLevelVO;
 import com.trpg.version1.mybatis.vo.RoomVO;
 
 import javax.websocket.Session;
@@ -105,6 +109,20 @@ public interface WebSocketService {
     public List<SysUser> getChatPeople(Integer chatId);
 
     public List<ChatGroup> getChatGroupList(List<Integer> chatGroupId);
+
+    public Integer getUserRoomRole(Integer uid, Integer rid);
+
+    public RoomUserLevelVO getUserRoomAllInfo(Integer uid, Integer rid);
+
+    public List<RoomUserLevelVO> getAllUserRoomRole(Integer uid, Integer rid);
+
+    public String setUserRoomRole(UserRoomRoleDTO userRoomRoleDTO, Integer uid);
+
+    public String setUserRoomCharacter(UserRoomCharacterDTO characterDTO, Integer uid);
+
+    public String changeCharacterAbility(CharacterStatusDTO characterStatusDTO, Integer uid,Integer rid);
+
+    public String changeCharacterAttribute(CharacterStatusDTO characterStatusDTO, Integer uid, Integer rid);
 
     /**
      * 获取当前在线用户列表

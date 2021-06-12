@@ -1,30 +1,29 @@
 package com.trpg.version1.service.Impl;
 
-import com.alibaba.fastjson.JSON;
-import com.sun.javafx.binding.StringFormatter;
 import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.Enum.RoomRoleEnum;
 import com.trpg.version1.common.exception.OpException;
 import com.trpg.version1.mybatis.dao.*;
+import com.trpg.version1.mybatis.daoExt.UserRoomCharacterMapper;
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
-import com.trpg.version1.mybatis.dto.ChatUserDTO;
+import com.trpg.version1.mybatis.dto.room.CharacterStatusDTO;
+import com.trpg.version1.mybatis.dto.room.UserRoomCharacterDTO;
+import com.trpg.version1.mybatis.dto.room.UserRoomRoleDTO;
 import com.trpg.version1.mybatis.entity.*;
+import com.trpg.version1.mybatis.vo.RoomUserLevelVO;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.WebSocketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.annotation.Resource;
-import javax.websocket.*;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
-import java.text.MessageFormat;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -66,6 +65,22 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private SysUserMapper sysUserMapper;
+
+    @Resource
+    private UserRoomCharacterMapper userRoomCharacterMapper;
+
+    @Resource
+    private CharactMapper charactMapper;
+
+    @Resource
+    private CharacterRoomMapper characterRoomMapper;
+
+    @Resource
+    private AbilityMapper abilityMapper;
+
+    @Resource
+    private AttributeCharacterMapper attributeCharacterMapper;
+//    private
 
 //    public static Map<String, List<String>> roomChat = new ConcurrentHashMap<>();
 //
@@ -326,7 +341,137 @@ public class WebSocketServiceImpl implements WebSocketService {
         return result;
     }
 
-//    public String leaveRoom(String uid, String rid){
+    @Override
+    public Integer getUserRoomRole(Integer uid, Integer rid) {
+        RoomUserExample example = new RoomUserExample();
+        example.createCriteria().andRoomidEqualTo(rid).andUseridEqualTo(uid);
+        List<RoomUser> entity = roomUserMapper.selectByExample(example);
+        RoomUser role = entity.stream().findFirst().orElse(null);
+        if(role == null){
+            throw new OpException(ResultCode.USER_NOT_IN_ROOM.getCode(),ResultCode.USER_NOT_IN_ROOM.getDesc());
+        }
+        return  role.getLevel();
+    }
+
+    @Override
+    public RoomUserLevelVO getUserRoomAllInfo(Integer uid, Integer rid) {
+        List<RoomUserLevelVO> entity = userRoomCharacterMapper.getUserRole(rid,uid);
+        RoomUserLevelVO result = entity.stream().findFirst().orElse(null);
+        if(result == null){
+            throw new OpException(ResultCode.USER_NOT_IN_ROOM.getCode(),ResultCode.USER_NOT_IN_ROOM.getDesc());
+        }
+        if(result.getCharacterName() == null){
+            result.setCid(-1);
+            result.setCharacterName("");
+        }
+        return result;
+    }
+
+    @Override
+    public List<RoomUserLevelVO> getAllUserRoomRole(Integer uid, Integer rid) {
+        if(!RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        List<RoomUserLevelVO> result = userRoomCharacterMapper.getUserRoleByRid(rid);
+        result.stream().forEach(e->{
+            if(e.getCharacterName() == null){
+                e.setCharacterName("");
+                e.setCid(-1);
+            }
+        });
+        return result;
+    }
+
+    @Override
+    public String setUserRoomRole(UserRoomRoleDTO userRoomRoleDTO, Integer uid) {
+        if(!RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid,userRoomRoleDTO.getRid()))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        if(userRoomRoleDTO.getUid() == uid){
+            throw new OpException(ResultCode.USER_SELF_OP.getCode(),ResultCode.USER_SELF_OP.getDesc());
+        }
+        RoomUser roomUser = new RoomUser();
+        roomUser.setLevel(userRoomRoleDTO.getLevel());
+        roomUser.setUserid(userRoomRoleDTO.getUid());
+        roomUser.setRoomid(userRoomRoleDTO.getRid());
+        roomUser.setState(0);
+        RoomUserExample example = new RoomUserExample();
+        example.createCriteria().andUseridEqualTo(userRoomRoleDTO.getUid()).andRoomidEqualTo(userRoomRoleDTO.getRid());
+        roomUserMapper.updateByExample(roomUser,example);
+        return "修改成功";
+    }
+
+    @Override
+    public String setUserRoomCharacter(UserRoomCharacterDTO characterDTO, Integer uid) {
+        if(!RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid,characterDTO.getRid()))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        if(!RoomRoleEnum.HOST.checkLevel(getUserRoomRole(characterDTO.getUid(),characterDTO.getRid()))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        CharactExample example = new CharactExample();
+        example.createCriteria().andCharacteridEqualTo(characterDTO.getCid()).andUseridEqualTo(characterDTO.getUid());
+        long count = charactMapper.countByExample(example);
+        if(count ==0){
+            throw new OpException(ResultCode.CHARACTER_NOT_BELONG.getCode(),ResultCode.CHARACTER_NOT_BELONG.getDesc());
+        }
+//        CharacterR
+        CharacterRoom entity = new CharacterRoom();
+        entity.setRoomid(characterDTO.getRid());
+        entity.setCharacterid(characterDTO.getCid());
+        entity.setUserid(characterDTO.getUid());
+        entity.setState(0);
+        CharacterRoomExample example1 = new CharacterRoomExample();
+        example1.createCriteria().andUseridEqualTo(characterDTO.getUid()).andRoomidEqualTo(characterDTO.getRid());
+        if(characterRoomMapper.countByExample(example1) == 0){
+            characterRoomMapper.insert(entity);
+        }
+        else{
+            characterRoomMapper.updateByExample(entity,example1);
+        }
+        return "修改成功";
+    }
+
+    @Override
+    public String changeCharacterAbility(CharacterStatusDTO characterStatusDTO, Integer uid, Integer rid) {
+        CharactExample example = new CharactExample();
+        example.createCriteria().andUseridEqualTo(uid).andCharacteridEqualTo(characterStatusDTO.getCid());
+        long count = charactMapper.countByExample(example);
+        if(!RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid, rid)) && count == 0){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        Ability entity = new Ability();
+        entity.setNumlearn(characterStatusDTO.getNum());
+        AbilityExample abilityExample = new AbilityExample();
+        abilityExample.createCriteria().andCharacteridEqualTo(characterStatusDTO.getCid()).andSkillidEqualTo(characterStatusDTO.getAid());
+        if(abilityMapper.countByExample(abilityExample) == 0){
+            abilityMapper.insert(entity);
+        }
+        else{
+            abilityMapper.updateByExample(entity,abilityExample);
+        }
+        return "修改成功";
+    }
+
+    @Override
+    public String changeCharacterAttribute(CharacterStatusDTO characterStatusDTO, Integer uid, Integer rid) {
+        CharactExample example = new CharactExample();
+        example.createCriteria().andUseridEqualTo(uid).andCharacteridEqualTo(characterStatusDTO.getCid());
+        long count = charactMapper.countByExample(example);
+        if(!RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid, rid)) && count == 0){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        AttributeCharacter entity = new AttributeCharacter();
+        entity.setNum(characterStatusDTO.getNum());
+        AttributeCharacterExample attributeCharacterExample = new AttributeCharacterExample();
+        attributeCharacterExample.createCriteria().andCharacteridEqualTo(characterStatusDTO.getCid()).andAttributeidEqualTo(characterStatusDTO.getAid());
+        attributeCharacterMapper.updateByExample(entity,attributeCharacterExample);
+        return "修改成功";
+    }
+
+
+
+    //    public String leaveRoom(String uid, String rid){
 //        //参数校验
 //        RoomExample roomExample = new RoomExample();
 //        roomExample.createCriteria().andRoomidEqualTo(rid);

@@ -34,6 +34,9 @@ public enum ResultCode {
     EXIST_MODULE_NAME("010026", "该模组名称已被使用"),
     EMPTY_PUBLISH_TIME("010027", "模组上传时间不可为空"),
     EMPTY_CHATROOM_ID("010028", "聊天组id不可为空"),
+    EMPTY_ROOM_ID("010029", "房间id不可为空"),
+    EMPTY_LEVEL("010030", "用户等级不可为空"),
+    INVALID_ABILITY_NUM("010031", "属性值超出取值范围"),
     //02:账号
     EMAIL_ALREADY_EXIST("020001","邮箱已存在"),
     TOKENERROR("020002","token错误"),
@@ -45,6 +48,9 @@ public enum ResultCode {
     INVALID_PHONE_TARGET("030002","短信发送失败"),
     //04:房间操作错误码
     INVALID_ROOM_ROLE("040001","房间角色权限不足"),
+    USER_NOT_IN_ROOM("040002","用户不在指定房间内"),
+    USER_SELF_OP("040003","用户不可对自己执行该操作"),
+    CHARACTER_NOT_BELONG("040004","角色归属权错误"),
     //05：文件操作
     FILE_OPERATION_FAIL("050001","同名文件已存在"),
     FILE_EMPTY("050002","文件为空"),
