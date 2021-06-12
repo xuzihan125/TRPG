@@ -46,7 +46,7 @@ public class ModuleController {
 
     @ApiOperation(value = "方法描述:上传模组,请求方式:GET,参数:,返回值:JsonMessage<String>,是否可用:yes")
     @RequestMapping(value = "/module/upload",method = RequestMethod.POST)
-    public JsonMessage<String> moduleUpload(@RequestBody @Valid ModuleUploadDTO moduleUploadDTO, BindingResult bindingResult){
+    public JsonMessage<String> moduleUpload(@Valid ModuleUploadDTO moduleUploadDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
             throw new OpException(resultCode.getCode(),resultCode.getDesc());

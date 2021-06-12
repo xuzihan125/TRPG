@@ -21,11 +21,11 @@ import javax.validation.ConstraintDeclarationException;
 public class ExceptionHandle {
     Logger logger = LoggerFactory.getLogger(com.trpg.version1.common.exception.ExceptionHandle.class);
 
-    @ExceptionHandler(value = ConstraintDeclarationException.class)
+    @ExceptionHandler(value = Throwable.class)
     public Object handleConstraintDeclarationException(Exception e, HttpServletRequest req){
         logger.error(e.getMessage());
-//        e.printStackTrace();
-        return new JsonMessage<String>(e.getMessage(),ResultCode.INVALID_ATTRIBUTE.getCode(),ResultCode.INVALID_ATTRIBUTE.getDesc());
+        e.printStackTrace();
+        return new JsonMessage<String>(e.getMessage(),ResultCode.UNFROSEEN_ERROR.getCode(),ResultCode.UNFROSEEN_ERROR.getDesc());
     }
 
     @ExceptionHandler(value = {OpException.class})

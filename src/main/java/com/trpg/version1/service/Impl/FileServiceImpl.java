@@ -37,6 +37,7 @@ public class FileServiceImpl implements FileService {
             throw new OpException(ResultCode.FILE_EMPTY.getCode(),ResultCode.FILE_EMPTY.getDesc());
         }
         String dir = null;
+        BufferedOutputStream stream = null;
         try {
             String fileDir;
             if(type != FileType.DEFAULT){
@@ -46,12 +47,16 @@ public class FileServiceImpl implements FileService {
             else{
                 fileDir = file.getOriginalFilename();
             }
-            dir = absPath + type.getType() + fileDir;
+            dir = absPath + type.getDir() + fileDir;
             File dest = new File(dir);
+            String tempo  = dest.getParentFile().getPath();
             if (!dest.getParentFile().exists()) {
                 dest.getParentFile().mkdirs();
             }
-            file.transferTo(dest); // 保存文件
+            byte[] bytes = file.getBytes();
+            stream = new BufferedOutputStream(new FileOutputStream(dest));
+            stream.write(bytes);
+            stream.close();
         } catch (Exception e) {
             throw new OpException(ResultCode.FILE_OPERATION_FAIL.getCode(),ResultCode.FILE_OPERATION_FAIL.getDesc());
         }

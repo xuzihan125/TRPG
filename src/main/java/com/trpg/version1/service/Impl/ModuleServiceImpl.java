@@ -72,7 +72,7 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public String moduleUpload(ModuleUploadDTO moduleUploadDTO) {
+    public String moduleUpload(ModuleUploadDTO moduleUploadDTO){
         Module module = new Module();
         module.setUserid(moduleUploadDTO.getUid());
         module.setName(moduleUploadDTO.getName());
@@ -108,9 +108,9 @@ public class ModuleServiceImpl implements ModuleService {
             }
         }
 
-        String moduleDir = fileService.uploadFile(moduleUploadDTO.getFile(), String.valueOf(module.getMid()), FileType.MODULE);
+        String moduleDir = fileService.uploadFile(moduleUploadDTO.getFile()[0], String.valueOf(module.getMid()), FileType.MODULE);
         module.setFileurl(moduleDir);
-        String picDir = fileService.uploadFile(moduleUploadDTO.getPic(), String.valueOf(module.getMid()),FileType.COVER);
+        String picDir = fileService.uploadFile(moduleUploadDTO.getPic()[0], String.valueOf(module.getMid()),FileType.COVER);
         module.setCoverurl(picDir);
 
         ModuleExample example = new ModuleExample();

@@ -2,9 +2,9 @@ package com.trpg.version1.common.Enum;
 
 public enum FileType {
 
-    MODULE("module","模组","module/"),
-    DEFAULT("default","默认","default/"),
-    COVER("cover","模组封面","cover/");
+    MODULE("module","模组","module\\"),
+    DEFAULT("default","默认","default\\"),
+    COVER("cover","模组封面","cover\\");
 
     private String type;
     private String desc;

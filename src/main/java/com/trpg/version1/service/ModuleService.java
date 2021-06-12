@@ -13,5 +13,5 @@ public interface ModuleService {
 
     List<ModuleListVO> ModuleList();
 
-    String moduleUpload(ModuleUploadDTO moduleUploadDTO);
+    String moduleUpload(ModuleUploadDTO moduleUploadDTO);//, MultipartFile[] file, MultipartFile[] pic);
 }
