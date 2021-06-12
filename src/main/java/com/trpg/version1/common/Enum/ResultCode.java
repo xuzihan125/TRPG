@@ -50,6 +50,8 @@ public enum ResultCode {
     FILE_NOT_EXIST("050003","文件不存在"),
     FILE_DOWNLOAD_FAIL("050004","文件传输失败"),
     FILE_NAME_UNENCODABLE("050004","文件传输失败"),
+    //06:模组错误码
+    INVALID_MODULE_FILE("060001","模组文件传输失败"),
 
     EMAILNOTEXIST("400002","账号不存在"),
     NOT_EXIST_BOOK("200001","满足条件的书不存在"),

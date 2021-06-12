@@ -1,5 +1,6 @@
 package com.trpg.version1.service.Impl;
 
+import com.trpg.version1.common.Enum.FileType;
 import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.exception.OpException;
 import com.trpg.version1.mybatis.dao.LabelModuleMapper;
@@ -8,8 +9,10 @@ import com.trpg.version1.mybatis.dao.SysUserMapper;
 import com.trpg.version1.mybatis.dto.ModuleUploadDTO;
 import com.trpg.version1.mybatis.entity.*;
 import com.trpg.version1.mybatis.vo.ModuleListVO;
+import com.trpg.version1.service.FileService;
 import com.trpg.version1.service.ModuleService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -25,6 +28,9 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Resource
     private SysUserMapper sysUserMapper;
+
+    @Resource
+    private FileService fileService;
 
     @Override
     public List<ModuleListVO> ModuleList() {
@@ -50,7 +56,11 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public String moduleUpload(ModuleUploadDTO moduleUploadDTO) {
+    public String moduleUpload(ModuleUploadDTO moduleUploadDTO, MultipartFile[] files, MultipartFile[] pics) {
+        if(files.length!=1 || pics.length!=1){
+            throw new OpException(ResultCode.INVALID_MODULE_FILE.getCode(),ResultCode.INVALID_MODULE_FILE.getDesc());
+        }
+
         Module module = new Module();
         module.setUserid(moduleUploadDTO.getUid());
         module.setName(moduleUploadDTO.getName());
@@ -74,12 +84,7 @@ public class ModuleServiceImpl implements ModuleService {
         }
 
         moduleMapper.insert(module);
-        List<Module> moduleList = moduleMapper.selectByExample(moduleExample);
-        Module mod = moduleList.stream().findFirst().orElse(null);
-        if(mod == null){
-            throw new OpException(ResultCode.INVALID_ACCOUNT.getCode(),ResultCode.INVALID_ACCOUNT.getDesc());
-        }
-        int mid = mod.getMid();
+        int mid = module.getMid();
 
         List<Integer> labelIds = moduleUploadDTO.getLabel();
         if(labelIds != null){
@@ -90,6 +95,15 @@ public class ModuleServiceImpl implements ModuleService {
                 labelModuleMapper.insert(labelModule);
             }
         }
+
+        String moduleDir = fileService.uploadFile(files[0], String.valueOf(module.getMid()), FileType.MODULE);
+        module.setFileurl(moduleDir);
+        String picDir = fileService.uploadFile(pics[0], String.valueOf(module.getMid()),FileType.COVER);
+        module.setCoverurl(picDir);
+
+        ModuleExample example = new ModuleExample();
+        example.createCriteria().andMidEqualTo(mid);
+        moduleMapper.updateByExample(module,example);
         return "上传模组成功";
     }
 

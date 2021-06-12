@@ -39,11 +39,12 @@ public class ModuleController {
 
     @ApiOperation(value = "方法描述:上传模组,请求方式:GET,参数:,返回值:JsonMessage<String>,是否可用:yes")
     @RequestMapping(value = "/module/upload",method = RequestMethod.POST)
-    public JsonMessage<String> moduleUpload(@Valid ModuleUploadDTO moduleUploadDTO, BindingResult bindingResult, @RequestParam(required = false, value = "files") MultipartFile[] files){
+    public JsonMessage<String> moduleUpload(@Valid ModuleUploadDTO moduleUploadDTO, BindingResult bindingResult, @RequestParam(required = false, value = "files") MultipartFile[] files,
+                                            @RequestParam(required = false, value = "files") MultipartFile[] pics){
         if(bindingResult.hasErrors()){
             ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
             throw new OpException(resultCode.getCode(),resultCode.getDesc());
         }
-        return new JsonMessage<String>(moduleService.moduleUpload(moduleUploadDTO));
+        return new JsonMessage<String>(moduleService.moduleUpload(moduleUploadDTO,files,pics));
     }
 }

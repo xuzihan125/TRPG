@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * @author xuzihan
@@ -24,8 +25,8 @@ public class FileController {
 
     @ResponseBody
     @RequestMapping(value = "/uploadFile",method = RequestMethod.POST)
-    public JsonMessage<String> uploadFile(@RequestParam(required = false, value = "files") MultipartFile[] files) {
-        return new JsonMessage<>(fileService.uploadFile(files));
+    public JsonMessage<List<String>> uploadFile(@RequestParam(required = false, value = "files") MultipartFile[] files) {
+        return new JsonMessage<>(fileService.uploadFiles(files));
     }
 
     @RequestMapping(value = "/file/download", method = RequestMethod.GET)

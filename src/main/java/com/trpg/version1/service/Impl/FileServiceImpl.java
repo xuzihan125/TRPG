@@ -1,6 +1,7 @@
 package com.trpg.version1.service.Impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.trpg.version1.common.Enum.FileType;
 import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.exception.OpException;
 import com.trpg.version1.service.FileService;
@@ -11,6 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xuzihan
@@ -26,31 +31,41 @@ public class FileServiceImpl implements FileService {
     @Value("${relativePath.file}")
     private String fileRel;
 
-
+    @Override
+    public String uploadFile(MultipartFile file, String filename, FileType type) {
+        if(file.isEmpty()){
+            throw new OpException(ResultCode.FILE_EMPTY.getCode(),ResultCode.FILE_EMPTY.getDesc());
+        }
+        String dir = null;
+        try {
+            String fileDir;
+            if(type != FileType.DEFAULT){
+                String fileType = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+                fileDir = filename + fileType;
+            }
+            else{
+                fileDir = file.getOriginalFilename();
+            }
+            dir = absPath + type.getType() + fileDir;
+            File dest = new File(dir);
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            file.transferTo(dest); // 保存文件
+        } catch (Exception e) {
+            throw new OpException(ResultCode.FILE_OPERATION_FAIL.getCode(),ResultCode.FILE_OPERATION_FAIL.getDesc());
+        }
+        return dir;
+    }
 
     @Override
-    public String uploadFile(MultipartFile[] files) {
-        MultipartFile file;
-//        System.out.println("get request,files size:" + files.length);
-        for (int i = 0; i < files.length; ++i) {
-            file = files[i];
-            if (!file.isEmpty()) {
-                try {
-                    String fileName = file.getOriginalFilename();
-                    File dest = new File(absPath + fileRel + fileName);
-                    System.out.println(fileName);
-                    if (!dest.getParentFile().exists()) {
-                        dest.getParentFile().mkdirs();
-                    }
-                    file.transferTo(dest); // 保存文件
-                } catch (Exception e) {
-                    throw new OpException(ResultCode.FILE_OPERATION_FAIL.getCode(),ResultCode.FILE_OPERATION_FAIL.getDesc());
-                }
-            } else {
-                throw new OpException(ResultCode.FILE_EMPTY.getCode(),ResultCode.FILE_EMPTY.getDesc());
-            }
+    public List<String> uploadFiles(MultipartFile[] files) {
+        List<String> result = new ArrayList<>();
+        for(MultipartFile file : files){
+            String fileType = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            result.add(uploadFile(file,null,FileType.DEFAULT));
         }
-        return "文件保存成功";
+        return result;
     }
 
     @Override

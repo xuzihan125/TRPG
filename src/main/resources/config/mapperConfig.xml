@@ -30,7 +30,7 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="module" domainObjectName = "Module"  enableCountByExample="true" >
+        <table tableName="module" domainObjectName = "Module"  enableCountByExample="true"  >
             <generatedKey column="mid" sqlStatement="MySql" identity="true" />
         </table>
     </context>
