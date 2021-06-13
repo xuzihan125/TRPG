@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
             throw new OpException(ResultCode.INVALID_ATTRIBUTE.getCode(),ResultCode.INVALID_ATTRIBUTE.getDesc());
         }
         SysUserExample example = new SysUserExample();
-        example.createCriteria().andEmailEqualTo(userModifyDTO.getEmail());
+        example.createCriteria().andEmailEqualTo(userModifyDTO.getEmail()).andUseridNotEqualTo(userModifyDTO.getUid());
         if (sysUserMapper.countByExample(example)>0){
             throw new OpException(ResultCode.EMAIL_ALREADY_EXIST.getCode(),ResultCode.EMAIL_ALREADY_EXIST.getDesc());
         }

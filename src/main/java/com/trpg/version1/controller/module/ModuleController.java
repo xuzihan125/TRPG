@@ -6,6 +6,7 @@ import com.trpg.version1.common.exception.OpException;
 import com.trpg.version1.common.util.ResultCodeUtil;
 import com.trpg.version1.mybatis.dto.ModuleUploadDTO;
 import com.trpg.version1.mybatis.entity.Module;
+import com.trpg.version1.mybatis.vo.ModuleListShortVO;
 import com.trpg.version1.mybatis.vo.ModuleListVO;
 import com.trpg.version1.service.ModuleService;
 import io.swagger.annotations.Api;
@@ -33,9 +34,9 @@ public class ModuleController {
     private ModuleService moduleService;
 
     @ApiOperation(value = "方法描述:获得模组列表,请求方式:GET,参数:null,返回值:JsonMessage<List<ModuleListVO>>,是否可用:yes")
-    @RequestMapping(value = "/module/get",method = RequestMethod.GET)
-    public JsonMessage<List<ModuleListVO>> getModuleList(){
-        return new JsonMessage<List<ModuleListVO>>(moduleService.ModuleList());
+    @RequestMapping(value = "/module/getList/{match}",method = RequestMethod.GET)
+    public JsonMessage<List<ModuleListShortVO>> getModuleList(@PathVariable(value = "match",required = false) String match){
+        return new JsonMessage<List<ModuleListShortVO>>(moduleService.ModuleList(match));
     }
 
     @ApiOperation(value = "方法描述:获得模组列表,请求方式:GET,参数:null,返回值:JsonMessage<List<ModuleListVO>>,是否可用:yes")

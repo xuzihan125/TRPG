@@ -6,8 +6,10 @@ import com.trpg.version1.common.exception.OpException;
 import com.trpg.version1.mybatis.dao.LabelModuleMapper;
 import com.trpg.version1.mybatis.dao.ModuleMapper;
 import com.trpg.version1.mybatis.dao.SysUserMapper;
+import com.trpg.version1.mybatis.daoExt.ModuleUserMapperExt;
 import com.trpg.version1.mybatis.dto.ModuleUploadDTO;
 import com.trpg.version1.mybatis.entity.*;
+import com.trpg.version1.mybatis.vo.ModuleListShortVO;
 import com.trpg.version1.mybatis.vo.ModuleListVO;
 import com.trpg.version1.service.FileService;
 import com.trpg.version1.service.ModuleService;
@@ -32,27 +34,16 @@ public class ModuleServiceImpl implements ModuleService {
     @Resource
     private FileService fileService;
 
-    @Override
-    public List<ModuleListVO> ModuleList() {
-        List<ModuleListVO> moduleListVOList = new ArrayList<ModuleListVO>();
+    @Resource
+    private ModuleUserMapperExt moduleUserMapperExt;
 
-        ModuleExample moduleExample = new ModuleExample();
-        List<Module> moduleList = moduleMapper.selectByExample(moduleExample);
-        for(Module module : moduleList){
-            ModuleListVO moduleListVO = new ModuleListVO(module);
-            int uid = module.getUserid();
-            SysUserExample sysUserExample = new SysUserExample();
-            sysUserExample.createCriteria().andUseridEqualTo(uid);
-            List<SysUser> users = sysUserMapper.selectByExample(sysUserExample);
-            SysUser user = users.stream().findFirst().orElse(null);
-            if(user == null){
-                throw new OpException(ResultCode.INVALID_ACCOUNT.getCode(),ResultCode.INVALID_ACCOUNT.getDesc());
-            }
-            moduleListVO.setAuthor(user.getNickname());
-            moduleListVO.setAuthor("author");
-            moduleListVOList.add(moduleListVO);
+    @Override
+    public List<ModuleListShortVO> ModuleList(String match) {
+        if(match == null){
+            match = "";
         }
-        return moduleListVOList;
+        match = "%" +match +"%";
+        return moduleUserMapperExt.getModuleList(match);
     }
 
     @Override

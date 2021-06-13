@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author xuzihan
@@ -18,5 +19,6 @@ public class CharacterStatusDTO {
 
     @DecimalMax(value = "100", message = "010031")
     @DecimalMin(value = "0", message = "010031")
+    @NotNull(message = "010031")
     private Integer num;
 }

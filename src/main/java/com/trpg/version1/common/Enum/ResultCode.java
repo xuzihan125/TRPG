@@ -37,6 +37,7 @@ public enum ResultCode {
     EMPTY_ROOM_ID("010029", "房间id不可为空"),
     EMPTY_LEVEL("010030", "用户等级不可为空"),
     INVALID_ABILITY_NUM("010031", "属性值超出取值范围"),
+    INVALID_PAGE_PARAM("010032","page参数错误"),
     //02:账号
     EMAIL_ALREADY_EXIST("020001","邮箱已存在"),
     TOKENERROR("020002","token错误"),

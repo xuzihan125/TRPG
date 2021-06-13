@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -21,11 +22,11 @@ public class ModuleUploadDTO {
         EMPTY_RECOMMEND_PEOPLE("010024", "推荐人群不能为空"),
         EMPTY_MODULE_PIC_PATH("010025", "图片路径不能为空"),
      */
-    //@NotEmpty(message = "010015")
+    @NotNull(message = "010015")
     private Integer uid;
 
     @NotEmpty(message = "010016")
-        private String name;
+    private String name;
 
     @NotEmpty(message = "010017")
     private String descri;

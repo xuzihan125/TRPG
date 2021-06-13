@@ -1,8 +1,10 @@
 package com.trpg.version1.mybatis.dto;
 
+import com.trpg.version1.common.Enum.ResultCode;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -14,11 +16,11 @@ import java.util.List;
 @Data
 public class RoomSearchDTO {
     //页面长度
-    @NotEmpty
+    @NotNull(message = "010032")
     private int pageSize;
 
     //页数
-    @NotEmpty
+    @NotNull(message = "010032")
     private int pageNum;
 
     // 房间名称或房间描述
