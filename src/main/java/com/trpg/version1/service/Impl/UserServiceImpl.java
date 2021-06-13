@@ -131,9 +131,9 @@ public class UserServiceImpl implements UserService {
         user.setUserid(userModifyDTO.getUid());
         user.setPhone(userModifyDTO.getPhone());
         user.setNickname(userModifyDTO.getNickname());
-        user.setWechatid(userModifyDTO.getWechatid());
         user.setDescri(userModifyDTO.getDescri());
 
+        example.clear();
         example.createCriteria().andUseridEqualTo(userModifyDTO.getUid());
         sysUserMapper.updateByExampleSelective(user, example);
         //构造返回值
@@ -141,7 +141,6 @@ public class UserServiceImpl implements UserService {
         userModifyVO.setUid(userModifyDTO.getUid());
         userModifyVO.setPhone(userModifyDTO.getPhone());
         userModifyVO.setNickname(userModifyDTO.getNickname());
-        userModifyVO.setWechatid(userModifyDTO.getWechatid());
         userModifyVO.setDescri(userModifyDTO.getDescri());
         return userModifyVO;
     }
@@ -167,7 +166,6 @@ public class UserServiceImpl implements UserService {
         userInfoVO.setEmail(user.getEmail());
         userInfoVO.setNickname(user.getNickname());
         userInfoVO.setPhone(user.getPhone());
-        userInfoVO.setWechatid(user.getWechatid());
         userInfoVO.setDescri(user.getDescri());
 
         //根据用户id查询出对应的评价列表

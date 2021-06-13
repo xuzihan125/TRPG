@@ -14,6 +14,5 @@ public class UserModifyVO {
     private String email;
     private String phone;
     private String nickname;
-    private String wechatid;
     private String descri;
 }

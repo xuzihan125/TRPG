@@ -34,9 +34,6 @@ public class UserModifyDTO {
     @Length(max = 32, min = 6, message = "010012")
     private String nickname;
 
-    @NotEmpty(message = "010013")
-    private String wechatid;
-
     @NotEmpty(message = "010014")
     private String descri;
 }
