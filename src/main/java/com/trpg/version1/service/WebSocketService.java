@@ -4,6 +4,7 @@ import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.ChatUserDTO;
 import com.trpg.version1.mybatis.dto.room.CharacterStatusDTO;
+import com.trpg.version1.mybatis.dto.room.InfoBoardDTO;
 import com.trpg.version1.mybatis.dto.room.UserRoomCharacterDTO;
 import com.trpg.version1.mybatis.dto.room.UserRoomRoleDTO;
 import com.trpg.version1.mybatis.entity.ChatGroup;
@@ -123,6 +124,9 @@ public interface WebSocketService {
     public String changeCharacterAbility(CharacterStatusDTO characterStatusDTO, Integer uid,Integer rid);
 
     public String changeCharacterAttribute(CharacterStatusDTO characterStatusDTO, Integer uid, Integer rid);
+
+    public Integer createBoard(InfoBoardDTO infoBoardDTO, Integer uid, Integer rid);
+
 
     /**
      * 获取当前在线用户列表

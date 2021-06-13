@@ -8,6 +8,7 @@ import com.trpg.version1.mybatis.daoExt.UserRoomCharacterMapper;
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.room.CharacterStatusDTO;
+import com.trpg.version1.mybatis.dto.room.InfoBoardDTO;
 import com.trpg.version1.mybatis.dto.room.UserRoomCharacterDTO;
 import com.trpg.version1.mybatis.dto.room.UserRoomRoleDTO;
 import com.trpg.version1.mybatis.entity.*;
@@ -80,6 +81,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private AttributeCharacterMapper attributeCharacterMapper;
+
+    @Resource
+    private InfoBoardMapper infoBoardMapper;
 //    private
 
 //    public static Map<String, List<String>> roomChat = new ConcurrentHashMap<>();
@@ -301,6 +305,14 @@ public class WebSocketServiceImpl implements WebSocketService {
             throw new OpException(ResultCode.INVALID_ATTRIBUTE.getCode(),ResultCode.INVALID_ATTRIBUTE.getDesc());
         }
         int chatId = chatGroup.getChatid();
+        //检查是否已在房间中
+        RoomUserExample roomUserExample = new RoomUserExample();
+        roomUserExample.createCriteria().andRoomidEqualTo(rid).andUseridEqualTo(uid);
+        List<RoomUser> roomUserList = roomUserMapper.selectByExample(roomUserExample);
+        RoomUser checkEntity = roomUserList.stream().findFirst().orElse(null);
+        if(checkEntity!=null){
+            return chatId;
+        }
         //加入聊天组
         ChatUser chatUser = new ChatUser();
         chatUser.setState(0);
@@ -312,7 +324,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         roomUser.setRoomid(rid);
         roomUser.setState(0);
         roomUser.setUserid(Integer.valueOf(uid));
-        roomUser.setLevel(RoomRoleEnum.HOST.getCode());
+        roomUser.setLevel(RoomRoleEnum.VIEWER.getCode());
         roomUserMapper.insert(roomUser);
         return chatId;
     }
@@ -469,7 +481,18 @@ public class WebSocketServiceImpl implements WebSocketService {
         return "修改成功";
     }
 
-
+    @Override
+    public Integer createBoard(InfoBoardDTO infoBoardDTO, Integer uid, Integer rid) {
+        if(RoomRoleEnum.PLAYER.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        InfoBoard infoBoard = new InfoBoard();
+        infoBoard.setRoomid(uid);
+        infoBoard.setInfo(infoBoard.getInfo());
+        infoBoard.setTitle(infoBoard.getTitle());
+        infoBoard.setState(0);
+        return infoBoardMapper.insert(infoBoard);
+    }
 
     //    public String leaveRoom(String uid, String rid){
 //        //参数校验

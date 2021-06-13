@@ -72,6 +72,19 @@ public class SwaggerConfig {
                 .groupName("标签列表接口")
                 .globalOperationParameters(builder());
     }
+
+    @Bean
+    public Docket createFileDocket(){
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.trpg.version1.controller.file"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo())
+                .groupName("文件操作接口")
+                .globalOperationParameters(builder());
+    }
+
 //
 //    @Bean
 //    public Docket createEbookDocket(){
