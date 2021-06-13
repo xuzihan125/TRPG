@@ -2,7 +2,6 @@ package com.trpg.version1.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.trpg.version1.mybatis.dao.RoomMapper;
-import com.trpg.version1.mybatis.dto.RoomSearchDTO;
 import com.trpg.version1.mybatis.entity.Room;
 import com.trpg.version1.mybatis.entity.RoomExample;
 import com.trpg.version1.service.RoomService;
@@ -24,11 +23,15 @@ public class RoomServiceImpl implements RoomService {
     private RoomMapper roomMapper;
 
     @Override
-    public List<Room> getRoomPage(RoomSearchDTO roomSearchDTO) {
+    public List<Room> getRoomPage(String match) {
+        if(match == null){
+            match = "";
+        }
+        match = "%" +match +"%";
         RoomExample example = new RoomExample();
-        example.or().andNameLike("%"+roomSearchDTO.getContext()+"%");
-        example.or().andDescriLike("%"+roomSearchDTO.getContext()+"%");
-        PageHelper.startPage(roomSearchDTO.getPageNum(),roomSearchDTO.getPageSize());
+        example.or().andNameLike(match);
+        example.or().andDescriLike(match);
+        example.or().andTypeLike(match);
         List<Room> result = roomMapper.selectByExample(example);
         return result;
     }
