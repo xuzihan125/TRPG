@@ -87,7 +87,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 )
                 .permitAll()
                 .antMatchers("/auth/**","/login").permitAll()
-                .antMatchers("/room/**").hasRole(RoleEnum.DEFAULT_ROLE.getRole())
+//                .antMatchers("/room/**").hasRole(RoleEnum.DEFAULT_ROLE.getRole())
                 .antMatchers(HttpMethod.OPTIONS,"/**").anonymous()
                 .anyRequest().authenticated()
 //                    .and().exceptionHandling().accessDeniedHandler(jwtAccessDenied)

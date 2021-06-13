@@ -34,8 +34,8 @@ public class ModuleController {
     private ModuleService moduleService;
 
     @ApiOperation(value = "方法描述:获得模组列表,请求方式:GET,参数:null,返回值:JsonMessage<List<ModuleListVO>>,是否可用:yes")
-    @RequestMapping(value = "/module/getList/{match}",method = RequestMethod.GET)
-    public JsonMessage<List<ModuleListShortVO>> getModuleList(@RequestParam(value = "match", required = false) String match){
+    @RequestMapping(value = "/module/getList",method = RequestMethod.GET)
+    public JsonMessage<List<ModuleListShortVO>> getModuleList(String match){
         return new JsonMessage<List<ModuleListShortVO>>(moduleService.ModuleList(match));
     }
 

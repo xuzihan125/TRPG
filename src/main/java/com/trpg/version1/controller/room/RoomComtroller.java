@@ -24,14 +24,13 @@ import java.util.List;
  **/
 @Api(value = "房间控制")
 @RestController
-@CrossOrigin
 public class RoomComtroller {
     @Resource
     private RoomService roomService;
 
     @ApiOperation(value = "方法描述:获得房间列表,请求方式:GET,参数:String,返回值:JsonMessage<List<Room>>,是否可用:yes")
-    @RequestMapping(value = "/room/get/{match}", method = RequestMethod.GET)
-    public JsonMessage<List<Room>> getRoomPage(@RequestParam(value = "match", required = false) String match){
+    @RequestMapping(value = "/room/get", method = RequestMethod.GET)
+    public JsonMessage<List<Room>> getRoomPage(String match){
         return new JsonMessage<List<Room>>(roomService.getRoomPage(match));
     }
 

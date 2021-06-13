@@ -7,10 +7,7 @@ import com.trpg.version1.common.util.ResultCodeUtil;
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.UserDTO;
-import com.trpg.version1.mybatis.dto.room.CharacterStatusDTO;
-import com.trpg.version1.mybatis.dto.room.RoomCreateDTO;
-import com.trpg.version1.mybatis.dto.room.UserRoomCharacterDTO;
-import com.trpg.version1.mybatis.dto.room.UserRoomRoleDTO;
+import com.trpg.version1.mybatis.dto.room.*;
 import com.trpg.version1.mybatis.entity.Room;
 import com.trpg.version1.mybatis.entity.SysUser;
 import com.trpg.version1.mybatis.vo.RoomUserLevelVO;
@@ -223,21 +220,21 @@ public class RoomOpController {
         return new JsonMessage(webSocketService.changeCharacterAbility(characterStatusDTO,uid,rid));
     }
 
-    /**
-     * @description: 修改房间地图
-     * @author xuzih
-     * @date 2021/6/13 1:02
-     * @version 1.0
-     */
-    @RequestMapping(value = "/room/changeMap/{uid}/{rid}",method = RequestMethod.POST)
-    public JsonMessage<String> changeMap(@RequestBody @Valid CharacterStatusDTO characterStatusDTO, BindingResult bindingResult,
-                                                      @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
-        if(bindingResult.hasErrors()){
-            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
-            throw new OpException(resultCode.getCode(),resultCode.getDesc());
-        }
-        return new JsonMessage(webSocketService.changeCharacterAbility(characterStatusDTO,uid,rid));
-    }
+//    /**
+//     * @description: 修改房间地图
+//     * @author xuzih
+//     * @date 2021/6/13 1:02
+//     * @version 1.0
+//     */
+//    @RequestMapping(value = "/room/changeMap/{uid}/{rid}",method = RequestMethod.POST)
+//    public JsonMessage<String> changeMap(@RequestBody @Valid RoomMapDTO characterStatusDTO, BindingResult bindingResult,
+//                                         @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+//        if(bindingResult.hasErrors()){
+//            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
+//            throw new OpException(resultCode.getCode(),resultCode.getDesc());
+//        }
+//        return new JsonMessage(webSocketService.changeCharacterAbility(characterStatusDTO,uid,rid));
+//    }
 
 //    /**
 //     * @description: 修改记事板
