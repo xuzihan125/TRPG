@@ -79,7 +79,7 @@ public class FileServiceImpl implements FileService {
         //        logService.logDownload("H:/learn/软件系统设计/file/"+name, response);
         System.out.println(name);
         // 获取文件
-        File file = new File(absPath + fileRel + name);
+        File file = new File(name);
         if(!file.exists()){
             throw new OpException(ResultCode.FILE_NOT_EXIST.getCode(),ResultCode.FILE_NOT_EXIST.getDesc());
         }
