@@ -290,7 +290,7 @@ public class RoomOpController {
      * @date 2021/6/13 0:44
      * @version 1.0
      */
-    @MessageMapping("/UserRoomCharacterMapperExt")
+    @MessageMapping("/sendtest")
     public JsonMessage<String> sendMessageTest(ChatMessageDTO chatMessageDTO){
         logger.info(chatMessageDTO.getContent());
         webSocketService.sendTest(chatMessageDTO);
