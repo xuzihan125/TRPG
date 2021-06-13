@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,7 @@ import java.util.List;
  **/
 @Api(value = "房间控制")
 @RestController()
+@CrossOrigin
 public class RoomComtroller {
     @Resource
     private RoomService roomService;

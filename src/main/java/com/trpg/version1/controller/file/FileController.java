@@ -19,6 +19,7 @@ import java.util.List;
  * @data 2021/6/4
  **/
 @RestController("/file")
+@CrossOrigin
 public class FileController {
     @Resource
     private FileService fileService;

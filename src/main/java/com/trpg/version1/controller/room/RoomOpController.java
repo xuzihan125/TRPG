@@ -37,6 +37,7 @@ import java.util.List;
 
 @Api(value = "房间操作")
 @RestController
+@CrossOrigin
 //@MessageMapping("foo")
 public class RoomOpController {
 
