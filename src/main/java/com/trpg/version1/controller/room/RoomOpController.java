@@ -298,11 +298,11 @@ public class RoomOpController {
     }
 
 
-//    @Scheduled(fixedRate = 5000)
-//    public void sendMessage(){
-//        logger.info("发送信息");
-//        simpMessagingTemplate.convertAndSend("/topic/1","后端发送信息-测试");
-//    }
+    @Scheduled(fixedRate = 5000)
+    public void sendMessage(){
+        logger.info("发送信息");
+        simpMessagingTemplate.convertAndSend("/topic/1","后端发送信息-测试");
+    }
 
 //    /**
 //     * 精准推送
