@@ -223,6 +223,38 @@ public class RoomOpController {
     }
 
     /**
+     * @description: 修改房间地图
+     * @author xuzih
+     * @date 2021/6/13 1:02
+     * @version 1.0
+     */
+    @RequestMapping(value = "/room/changeMap/{uid}/{rid}",method = RequestMethod.POST)
+    public JsonMessage<String> changeMap(@RequestBody @Valid CharacterStatusDTO characterStatusDTO, BindingResult bindingResult,
+                                                      @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+        if(bindingResult.hasErrors()){
+            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
+            throw new OpException(resultCode.getCode(),resultCode.getDesc());
+        }
+        return new JsonMessage(webSocketService.changeCharacterAbility(characterStatusDTO,uid,rid));
+    }
+
+//    /**
+//     * @description: 修改记事板
+//     * @author xuzih
+//     * @date 2021/6/13 1:02
+//     * @version 1.0
+//     */
+//    @RequestMapping(value = "/room/changeBoard/{uid}",method = RequestMethod.POST)
+//    public JsonMessage<String> changeCharacterAbility(@RequestBody @Valid CharacterStatusDTO characterStatusDTO, BindingResult bindingResult,
+//                                                      @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+//        if(bindingResult.hasErrors()){
+//            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
+//            throw new OpException(resultCode.getCode(),resultCode.getDesc());
+//        }
+//        return new JsonMessage(webSocketService.changeCharacterAbility(characterStatusDTO,uid,rid));
+//    }
+
+    /**
      * @description: 发送信息
      * @author xuzih
      * @date 2021/6/13 0:44
@@ -240,7 +272,7 @@ public class RoomOpController {
      * @date 2021/6/13 0:44
      * @version 1.0
      */
-    @MessageMapping("/UserRoomCharacterMapper")
+    @MessageMapping("/UserRoomCharacterMapperExt")
     public JsonMessage<String> sendMessageTest(ChatMessageDTO chatMessageDTO){
         logger.info(chatMessageDTO.getContent());
         webSocketService.sendTest(chatMessageDTO);
