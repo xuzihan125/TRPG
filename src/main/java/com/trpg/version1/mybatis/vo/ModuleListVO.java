@@ -7,6 +7,7 @@ import lombok.Data;
 public class ModuleListVO {
     private Integer mid;
     private String image_path;
+    private String file_path;
     private String name;
     private String author;
     private String type;
@@ -21,6 +22,7 @@ public class ModuleListVO {
     public ModuleListVO(Module module){
         mid = module.getMid();
         image_path = module.getFileurl();
+        file_path = module.getFileurl();
         name = module.getName();
         type = module.getType();
         time_publish = module.getTimepublish();
