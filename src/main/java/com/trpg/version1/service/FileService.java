@@ -1,6 +1,7 @@
 package com.trpg.version1.service;
 
 import com.trpg.version1.common.Enum.FileType;
+import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,4 +18,10 @@ public interface FileService {
     List<String> uploadFiles(MultipartFile[] files);
 
     String downloadFile(String name, HttpServletResponse response);
+
+    String createEmptyFile(String filename, FileType type);
+
+    void recordLine(ChatMessageDTO chatMessageDTO, Integer chatId);
+
+    ChatMessageDTO getLine(Integer chatId);
 }

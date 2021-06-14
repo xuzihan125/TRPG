@@ -92,57 +92,12 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private OperationServiceImpl operationService;
-//    private
-
-//    public static Map<String, List<String>> roomChat = new ConcurrentHashMap<>();
-//
-//    //id, level
-//    public static Map<String, List<RoomUser>> roomUser = new ConcurrentHashMap<>();
-//
-//    public static Map<String, List<String>> chatUser = new ConcurrentHashMap<>();
-
 
     //================================================================================
     //================================================================================
     //===============================  监听方法 =======================================
     //================================================================================
     //================================================================================
-//
-//    /**
-//     * TODO  监听连接（有用户连接，立马到来执行这个方法），session 发生变化
-//     */
-//    @OnOpen
-//    public void onOpen(Session session) {
-//        // 保存新用户id,用户名,session会话,登录时间
-//        logger.info("建立监听");
-//    }
-//
-//
-//    /**
-//     * TODO  监听断开连接（有用户退出，会立马到来执行这个方法）
-//     */
-//    @OnClose
-//    public void onClose(Session session) {
-//        // 所有在线用户中去除下线用户
-//        logger.info("断开监听");
-//    }
-//
-//    /**
-//     * TODO 异常停止
-//     */
-//    @OnError
-//    public void onError(Session session, Throwable error) {
-//        logger.info("异常停止");
-//    }
-//
-//    /**
-//     * TODO 监听消息发送（收到客户端的消息立即执行）
-//     */
-//    @OnMessage
-//    public void onMessage(@PathParam("userId") String userId, String message, Session session) {
-//        logger.info("收到信息");
-//    }
-
 
     /**
      * 消息发送（ 遍历用户Id , 在通过sendMsg方法发送消息）
@@ -161,46 +116,19 @@ public class WebSocketServiceImpl implements WebSocketService {
                 simpMessagingTemplate.convertAndSend("/topic/"+chatUser.getUserid(),chatMessageDTO);
             }
         }
+        ChatGroupExample chatGroupExample = new ChatGroupExample();
+        chatGroupExample.createCriteria().andChatidEqualTo(Integer.valueOf(chatMessageDTO.getChat_id()));
+        List<ChatGroup> chatGroupList = chatGroupMapper.selectByExample(chatGroupExample);
+        ChatGroup chatGroup = chatGroupList.stream().findFirst().orElse(null);
+        if(chatGroup==null){
+            throw new OpException(ResultCode.FILE_NOT_EXIST.getCode(),ResultCode.FILE_NOT_EXIST.getDesc());
+        }
+
     }
 
     public void sendTest(ChatMessageDTO chatMessageDTO) {
         simpMessagingTemplate.convertAndSend("/topic/"+chatMessageDTO.getUid(),chatMessageDTO);
     }
-
-
-//    /**
-//     * 消息发送(最后发送, 在send方法中循环用户Id 列表依次发送消息给指定人)
-//     * <p>
-//     * // 消息发送（同步:getBasicRemote 异步:getAsyncRemote）
-//     * </P>
-//     *
-//     * @param userId  消息接收人ID , onlineUsers 的 key
-//     * @param sendMsg 消息内容
-//     */
-//    private void sendMsg(String userId, SendMsgVO sendMsg) {
-//        // 判断用户是否在线, 在线发送消息推送
-//        if (clients.containsKey(userId)) {
-//            clients.get(userId).getSession().getAsyncRemote().sendText(JSON.toJSONString(sendMsg));
-//        }
-//    }
-
-//    /**
-//     * 获取当前在线列表
-//     * <p>
-//     * 获取当前在线列表, 把onlineUsers 转到 OnlineUsersVO返回
-//     * </p>
-//     *
-//     * @return
-//     */
-//    public synchronized List<ChatUserDTO> getOnlineUsers() {
-//        List<ChatUserDTO> onlineUsersVOList = new ArrayList<>();
-//        for (OnlineUser onlineUsers : clients.values()) {
-//            ChatUserDTO chatUserDTO = new ChatUserDTO(); // onlineUsers 转化
-//            onlineUsersVOList.add(chatUserDTO);
-//        }
-//        return onlineUsersVOList;
-//    }
-
 
     //================================================================================
     //================================================================================
@@ -210,7 +138,6 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     public RoomVO createRoom(String uid, Room room1){
         //创建房间
-
         Room room = new Room();
         BeanUtils.copyProperties(room1,room);
         roomMapper.insert(room);
@@ -231,6 +158,11 @@ public class WebSocketServiceImpl implements WebSocketService {
         chatGroup.setTitle("公共频道");
         chatGroupMapper.insert(chatGroup);
         int chatId = chatGroup.getChatid();
+        String dir = fileService.createEmptyFile(chatId+".txt",FileType.RECORD);
+        chatGroup.setFileurl(dir);
+        ChatGroupExample example = new ChatGroupExample();
+        example.createCriteria().andChatidEqualTo(chatId);
+        chatGroupMapper.updateByExample(chatGroup,example);
         //加入聊天组
         ChatUser chatUser = new ChatUser();
         chatUser.setState(0);
@@ -253,11 +185,15 @@ public class WebSocketServiceImpl implements WebSocketService {
         //删除聊天窗口
         ChatGroupExample chatGroupExample = new ChatGroupExample();
         chatGroupExample.createCriteria().andRoomidEqualTo(rid);
-        List<com.trpg.version1.mybatis.entity.ChatGroup> result = chatGroupMapper.selectByExample(chatGroupExample);
+        List<ChatGroup> result = chatGroupMapper.selectByExample(chatGroupExample);
         chatGroupMapper.deleteByExample(chatGroupExample);
         //删除聊天组
+        List<Integer> chatIdList = new ArrayList<>();
+        result.stream().forEach(e->{
+            fileService.deleteFile(e.getFileurl());
+            chatIdList.add(e.getChatid());
+        });
         ChatUserExample chatUserExample = new ChatUserExample();
-        List<Integer> chatIdList = result.stream().map(com.trpg.version1.mybatis.entity.ChatGroup::getChatid).collect(Collectors.toList());
         chatUserExample.createCriteria().andChatidIn(chatIdList);
         chatUserMapper.deleteByExample(chatUserExample);
         return "删除成功";
@@ -284,6 +220,11 @@ public class WebSocketServiceImpl implements WebSocketService {
         chatGroup.setTitle("公共频道");
         chatGroupMapper.insert(chatGroup);
         int chatId = chatGroup.getChatid();
+        String dir = fileService.createEmptyFile(chatId+".txt",FileType.RECORD);
+        chatGroup.setFileurl(dir);
+        ChatGroupExample example = new ChatGroupExample();
+        example.createCriteria().andChatidEqualTo(chatId);
+        chatGroupMapper.updateByExample(chatGroup,example);
         //加入聊天组
         ChatUser chatUser = new ChatUser();
         chatUser.setState(0);

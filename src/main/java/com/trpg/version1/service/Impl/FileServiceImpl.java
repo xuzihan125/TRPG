@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.trpg.version1.common.Enum.FileType;
 import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.exception.OpException;
+import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.service.FileService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,21 @@ public class FileServiceImpl implements FileService {
 
     @Value("${relativePath.file}")
     private String fileRel;
+
+    @Override
+    public String createEmptyFile(String filename, FileType type) {
+        String dir = absPath + type.getDir() + filename;
+        File dest = new File(dir);
+        if(!dest.getParentFile().exists()){
+            dest.getParentFile().mkdir();
+        }
+        try{
+            dest.createNewFile();
+        }catch (Exception e) {
+            throw new OpException(ResultCode.FILE_OPERATION_FAIL.getCode(),ResultCode.FILE_OPERATION_FAIL.getDesc());
+        }
+        return dir;
+    }
 
     @Override
     public String uploadFile(MultipartFile file, String filename, FileType type) {
@@ -80,6 +96,17 @@ public class FileServiceImpl implements FileService {
         catch(Exception e){
             throw new OpException(ResultCode.FILE_OPERATION_FAIL.getCode(),ResultCode.FILE_OPERATION_FAIL.getDesc());
         }
+    }
+
+    @Override
+    public void recordLine(ChatMessageDTO chatMessageDTO, Integer chatId) {
+        String dir = absPath + FileType.RECORD.getDir() + chatId+".txt";
+//        File
+    }
+
+    @Override
+    public ChatMessageDTO getLine(Integer chatId) {
+        return null;
     }
 
     @Override

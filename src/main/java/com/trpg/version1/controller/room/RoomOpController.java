@@ -80,7 +80,7 @@ public class RoomOpController {
      * @version 1.0
      */
     @RequestMapping(value = "/room/enter/{uid}/{rid}", method = RequestMethod.GET)
-    public JsonMessage<RoomVO> enterRoom(@PathVariable("uid") Integer uid, @PathVariable("rid") Integer rid){
+    public JsonMessage<Integer> enterRoom(@PathVariable("uid") Integer uid, @PathVariable("rid") Integer rid){
         return new JsonMessage(webSocketService.enterRoom(uid,rid));
     }
 
@@ -144,7 +144,7 @@ public class RoomOpController {
         if(uid == null || rid == null){
             throw new OpException(ResultCode.EMPTY_CHATROOM_ID.getCode(),ResultCode.EMPTY_CHATROOM_ID.getDesc());
         }
-        return new JsonMessage(webSocketService.getUserRoomAllInfo(uid,rid));
+        return new JsonMessage(webSocketService.getUserRoomRole(uid,rid));
     }
     
     /**

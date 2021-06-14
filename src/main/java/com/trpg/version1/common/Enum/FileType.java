@@ -2,10 +2,12 @@ package com.trpg.version1.common.Enum;
 
 public enum FileType {
 
+    RECORD("record","聊天记录","record/"),
     MODULE("module","模组","module/"),
     DEFAULT("default","默认","default/"),
     MAP("map","地图","map/"),
     COVER("cover","模组封面","cover/");
+
 
     private String type;
     private String desc;

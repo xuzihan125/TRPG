@@ -48,7 +48,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 应用程序以 /app 为前缀，而 代理目的地以 /topic 为前缀.
         // js.url = "/app/hello" -> @MessageMapping("/hello") 注释的方法.
-        registry.enableSimpleBroker("/topic");               //设置服务器广播消息的基础路径
+        registry.enableSimpleBroker("/topic","/status");               //设置服务器广播消息的基础路径
         registry.setApplicationDestinationPrefixes("/app");  //设置客户端订阅消息的基础路径
 //        registry.setPathMatcher(new AntPathMatcher("."));    //可以已“.”来分割路径，看看类级别的@messageMapping和方法级别的@messageMapping
     }

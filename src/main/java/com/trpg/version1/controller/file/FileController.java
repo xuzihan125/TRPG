@@ -3,6 +3,7 @@ package com.trpg.version1.controller.file;
 import com.alibaba.fastjson.JSONObject;
 import com.trpg.version1.common.JsonMessage;
 import com.trpg.version1.service.FileService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @description: TODO
  * @data 2021/6/4
  **/
+@Api(value = "文件操作")
 @RestController("/file")
 @CrossOrigin
 public class FileController {
