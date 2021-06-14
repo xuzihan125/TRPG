@@ -50,6 +50,18 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public Docket createCharacterDocket(){
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.trpg.version1.controller.character"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo())
+                .groupName("角色接口")
+                .globalOperationParameters(builder());
+    }
+
+    @Bean
     public Docket createModuleDocket(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()

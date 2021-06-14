@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UserRoomRoleDTO {
     @NotNull(message = "010015")
-    private Integer uid;
+    private Integer target_uid;
 
     @NotNull(message = "010029")
     private Integer rid;

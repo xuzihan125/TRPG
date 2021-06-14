@@ -351,16 +351,16 @@ public class WebSocketServiceImpl implements WebSocketService {
         if(!RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid,userRoomRoleDTO.getRid()))){
             throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
         }
-        if(userRoomRoleDTO.getUid() == uid){
+        if(userRoomRoleDTO.getTarget_uid() == uid){
             throw new OpException(ResultCode.USER_SELF_OP.getCode(),ResultCode.USER_SELF_OP.getDesc());
         }
         RoomUser roomUser = new RoomUser();
         roomUser.setLevel(userRoomRoleDTO.getLevel());
-        roomUser.setUserid(userRoomRoleDTO.getUid());
+        roomUser.setUserid(userRoomRoleDTO.getTarget_uid());
         roomUser.setRoomid(userRoomRoleDTO.getRid());
         roomUser.setState(0);
         RoomUserExample example = new RoomUserExample();
-        example.createCriteria().andUseridEqualTo(userRoomRoleDTO.getUid()).andRoomidEqualTo(userRoomRoleDTO.getRid());
+        example.createCriteria().andUseridEqualTo(userRoomRoleDTO.getTarget_uid()).andRoomidEqualTo(userRoomRoleDTO.getRid());
         roomUserMapper.updateByExample(roomUser,example);
         return "修改成功";
     }
