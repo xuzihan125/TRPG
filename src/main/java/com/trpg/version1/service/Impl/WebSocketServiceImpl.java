@@ -152,11 +152,11 @@ public class WebSocketServiceImpl implements WebSocketService {
 
 //        ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
         ChatUserExample example = new ChatUserExample();
-        example.createCriteria().andChatidEqualTo(chatMessageDTO.getTargetChatId());
+        example.createCriteria().andChatidEqualTo(Integer.valueOf(chatMessageDTO.getTargetChatId()));
         List<ChatUser> result = chatUserMapper.selectByExample(example);
         for(ChatUser chatUser: result){
             if(chatUser.getUserid() != null){
-                simpMessagingTemplate.convertAndSend("/topic/"+String.valueOf(chatUser.getUserid()),chatMessageDTO);
+                simpMessagingTemplate.convertAndSend("/topic/"+chatUser.getUserid(),chatMessageDTO);
             }
         }
     }
@@ -348,14 +348,18 @@ public class WebSocketServiceImpl implements WebSocketService {
     }
 
     @Override
-    public List<ChatGroup> getChatGroupList(List<Integer> chatGroupId) {
+    public ChatGroup getChatGroupList(Integer chatGroupId) {
         if(chatGroupId == null || chatGroupId.size() == 0){
             throw new OpException(ResultCode.INVALID_INPUT.getCode(),ResultCode.INVALID_INPUT.getDesc());
         }
         ChatGroupExample example = new ChatGroupExample();
-        example.createCriteria().andChatidIn(chatGroupId);
+        example.createCriteria().andChatidEqualTo(chatGroupId);
         List<ChatGroup> result = chatGroupMapper.selectByExample(example);
-        return result;
+        ChatGroup entity = result.stream().findFirst().orElse(null);
+        if(entity == null){
+            throw new OpException(ResultCode.CHATEGROUP_NOT_EXIST.getCode(),ResultCode.CHATEGROUP_NOT_EXIST.getDesc());
+        }
+        return entity;
     }
 
     @Override

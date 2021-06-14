@@ -8,6 +8,7 @@ import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.UserDTO;
 import com.trpg.version1.mybatis.dto.room.*;
+import com.trpg.version1.mybatis.entity.ChatGroup;
 import com.trpg.version1.mybatis.entity.Room;
 import com.trpg.version1.mybatis.entity.SysUser;
 import com.trpg.version1.mybatis.vo.RoomUserLevelVO;
@@ -112,8 +113,8 @@ public class RoomOpController {
      * @date 2021/6/13 0:43
      * @version 1.0
      */
-    @RequestMapping(value = "/room/getChatGroup", method = RequestMethod.POST)
-    public JsonMessage<RoomVO> getChatGroup(@RequestBody List<Integer> chatId){
+    @RequestMapping(value = "/room/getChatGroup", method = RequestMethod.GET)
+    public JsonMessage<ChatGroup> getChatGroup(@RequestBody Integer chatId){
         return new JsonMessage(webSocketService.getChatGroupList(chatId));
     }
 
@@ -325,7 +326,7 @@ public class RoomOpController {
 
     @RequestMapping(value = "/test/test", method = RequestMethod.GET)
     public void test(String test){
-        operationService.checkOp(test,0);
+        logger.info(operationService.checkOp(test,0));
     }
 
 //    @Scheduled(fixedRate = 5000)

@@ -106,7 +106,7 @@ public interface WebSocketService {
 
     public List<SysUser> getChatPeople(Integer chatId);
 
-    public List<ChatGroup> getChatGroupList(List<Integer> chatGroupId);
+    public ChatGroup getChatGroupList(Integer chatGroupId);
 
     public Integer getUserRoomRole(Integer uid, Integer rid);
 
