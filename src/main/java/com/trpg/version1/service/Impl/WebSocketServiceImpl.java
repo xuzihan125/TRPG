@@ -154,7 +154,7 @@ public class WebSocketServiceImpl implements WebSocketService {
     public void send(ChatMessageDTO chatMessageDTO) {
         chatMessageDTO.setContent(operationService.checkOp(chatMessageDTO.getContent(),Integer.valueOf(chatMessageDTO.getCid())));
         ChatUserExample example = new ChatUserExample();
-        example.createCriteria().andChatidEqualTo(Integer.valueOf(chatMessageDTO.getTargetChatId()));
+        example.createCriteria().andChatidEqualTo(Integer.valueOf(chatMessageDTO.getChat_id()));
         List<ChatUser> result = chatUserMapper.selectByExample(example);
         for(ChatUser chatUser: result){
             if(chatUser.getUserid() != null){
@@ -164,7 +164,7 @@ public class WebSocketServiceImpl implements WebSocketService {
     }
 
     public void sendTest(ChatMessageDTO chatMessageDTO) {
-        simpMessagingTemplate.convertAndSend("/topic/"+String.valueOf(chatMessageDTO.getSenderUid()),chatMessageDTO);
+        simpMessagingTemplate.convertAndSend("/topic/"+chatMessageDTO.getUid(),chatMessageDTO);
     }
 
 
