@@ -12,6 +12,8 @@ import javax.validation.constraints.NotEmpty;
  **/
 @Data
 public class InfoBoardDTO {
+    private Integer boardId;
+
     @NotEmpty
     private String title;
 

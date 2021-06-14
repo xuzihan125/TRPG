@@ -1,5 +1,6 @@
 package com.trpg.version1.service.Impl;
 
+import com.trpg.version1.common.Enum.FileType;
 import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.Enum.RoomRoleEnum;
 import com.trpg.version1.common.exception.OpException;
@@ -7,13 +8,11 @@ import com.trpg.version1.mybatis.dao.*;
 import com.trpg.version1.mybatis.daoExt.UserRoomCharacterMapper;
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
-import com.trpg.version1.mybatis.dto.room.CharacterStatusDTO;
-import com.trpg.version1.mybatis.dto.room.InfoBoardDTO;
-import com.trpg.version1.mybatis.dto.room.UserRoomCharacterDTO;
-import com.trpg.version1.mybatis.dto.room.UserRoomRoleDTO;
+import com.trpg.version1.mybatis.dto.room.*;
 import com.trpg.version1.mybatis.entity.*;
 import com.trpg.version1.mybatis.vo.RoomUserLevelVO;
 import com.trpg.version1.mybatis.vo.RoomVO;
+import com.trpg.version1.service.FileService;
 import com.trpg.version1.service.WebSocketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +83,12 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private InfoBoardMapper infoBoardMapper;
+
+    @Resource
+    private FileService fileService;
+
+    @Resource
+    private RoomMapMapper roomMapMapper;
 //    private
 
 //    public static Map<String, List<String>> roomChat = new ConcurrentHashMap<>();
@@ -494,44 +499,82 @@ public class WebSocketServiceImpl implements WebSocketService {
         return infoBoardMapper.insert(infoBoard);
     }
 
-    //    public String leaveRoom(String uid, String rid){
-//        //参数校验
-//        RoomExample roomExample = new RoomExample();
-//        roomExample.createCriteria().andRoomidEqualTo(rid);
-//        List<Room> roomList = roomMapper.selectByExample(roomExample);
-//        if(roomList.size()==0){
-//            throw new OpException(ResultCode.INVALID_ATTRIBUTE.getCode(),ResultCode.INVALID_ATTRIBUTE.getDesc());
-//        }
-//        //查找聊天窗口
-//        ChatGroupExample chatGroupExample = new ChatGroupExample();
-//        chatGroupExample.createCriteria().andRoomidEqualTo(rid).andTypeEqualTo(1);
-//        List<ChatGroup> result = chatGroupMapper.selectByExample(chatGroupExample);
-//        ChatGroup chatGroup = result.stream().findFirst().orElse(null);
-//        if(chatGroup==null){
-//            throw new OpException(ResultCode.INVALID_ATTRIBUTE.getCode(),ResultCode.INVALID_ATTRIBUTE.getDesc());
-//        }
-//        int chatId = chatGroup.getChatid();
-//        //加入聊天组
-//        ChatUser chatUser = new ChatUser();
-//        chatUser.setState(0);
-//        chatUser.setChatid(chatId);
-//        chatUser.setUserid(uid);
-//        chatUserMapper.insert(chatUser);
-//        return chatId;
-//    }
-
-
-
-    /**
-     * 获取当前在线人数
-     *
-     * @return
-     */
-    public Integer getOnlineCount() {
-//        return onlineNumber.get();
-        return 0;
+    @Override
+    public String changeBoard(InfoBoardDTO infoBoardDTO, Integer uid, Integer rid) {
+        if(RoomRoleEnum.PLAYER.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        InfoBoard infoBoard = new InfoBoard();
+        infoBoard.setRoomid(uid);
+        infoBoard.setInfo(infoBoard.getInfo());
+        infoBoard.setTitle(infoBoard.getTitle());
+        infoBoard.setState(0);
+        InfoBoardExample example = new InfoBoardExample();
+        example.createCriteria().andBoardidEqualTo(infoBoard.getBoardid()).andRoomidEqualTo(rid);
+        infoBoardMapper.updateByExampleSelective(infoBoard,example);
+        return "修改成功";
     }
 
+    @Override
+    public String deleteBoard(Integer boardId, Integer uid, Integer rid) {
+        if(RoomRoleEnum.PLAYER.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        InfoBoardExample example = new InfoBoardExample();
+        example.createCriteria().andBoardidEqualTo(boardId).andRoomidEqualTo(rid);
+        infoBoardMapper.deleteByExample(example);
+        return "删除成功";
+    }
+
+    @Override
+    public Integer createMap(MapDTO mapDTO, Integer uid, Integer rid) {
+        if(RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        RoomMap roomMap = new RoomMap();
+        String name = UUID.randomUUID().toString().replace("-","");
+        String fileName = fileService.uploadFile(mapDTO.getMap()[0],name, FileType.MAP);
+        roomMap.setImageurl(fileName);
+        roomMap.setRoomid(rid);
+        roomMap.setState(0);
+        roomMap.setTitle(mapDTO.getTitle());
+        return roomMapMapper.insert(roomMap);
+    }
+
+    @Override
+    public String changeMap(MapDTO mapDTO, Integer uid, Integer rid) {
+        if(RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        RoomMapExample example = new RoomMapExample();
+        example.createCriteria().andRoomidEqualTo(rid).andMapidEqualTo(mapDTO.getMapId());
+        List<RoomMap> roomMapList = roomMapMapper.selectByExample(example);
+        RoomMap entity = roomMapList.stream().findFirst().orElse(null);
+        if(entity==null){
+            throw new OpException(ResultCode.MAP_NOT_EXIST.getCode(),ResultCode.MAP_NOT_EXIST.getDesc());
+        }
+        fileService.uploafFile(mapDTO.getMap()[0],entity.getImageurl());
+        entity.setTitle(mapDTO.getTitle());
+        roomMapMapper.updateByExampleSelective(entity,example);
+        return "修改成功";
+    }
+
+    @Override
+    public String deleteMap(Integer boardId, Integer uid, Integer rid) {
+        if(RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        RoomMapExample example = new RoomMapExample();
+        example.createCriteria().andRoomidEqualTo(rid).andMapidEqualTo(boardId);
+        List<RoomMap> roomMapList = roomMapMapper.selectByExample(example);
+        RoomMap entity = roomMapList.stream().findFirst().orElse(null);
+        if(entity==null){
+            throw new OpException(ResultCode.MAP_NOT_EXIST.getCode(),ResultCode.MAP_NOT_EXIST.getDesc());
+        }
+        fileService.deleteFile(entity.getImageurl());
+        roomMapMapper.deleteByExample(example);
+        return "删除成功";
+    }
 
     /**
      * 获取当前在线用户信息

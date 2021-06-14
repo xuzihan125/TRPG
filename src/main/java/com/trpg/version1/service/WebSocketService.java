@@ -3,10 +3,7 @@ package com.trpg.version1.service;
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.ChatUserDTO;
-import com.trpg.version1.mybatis.dto.room.CharacterStatusDTO;
-import com.trpg.version1.mybatis.dto.room.InfoBoardDTO;
-import com.trpg.version1.mybatis.dto.room.UserRoomCharacterDTO;
-import com.trpg.version1.mybatis.dto.room.UserRoomRoleDTO;
+import com.trpg.version1.mybatis.dto.room.*;
 import com.trpg.version1.mybatis.entity.ChatGroup;
 import com.trpg.version1.mybatis.entity.Room;
 import com.trpg.version1.mybatis.entity.SysUser;
@@ -126,6 +123,16 @@ public interface WebSocketService {
     public String changeCharacterAttribute(CharacterStatusDTO characterStatusDTO, Integer uid, Integer rid);
 
     public Integer createBoard(InfoBoardDTO infoBoardDTO, Integer uid, Integer rid);
+
+    public String changeBoard(InfoBoardDTO infoBoardDTO, Integer uid, Integer rid);
+
+    public String deleteBoard(Integer boardId, Integer uid, Integer rid);
+
+    public Integer createMap(MapDTO mapDTO, Integer uid, Integer rid);
+
+    public String changeMap(MapDTO mapDTO, Integer uid, Integer rid);
+
+    public String deleteMap(Integer boardId, Integer uid, Integer rid);
 
 
     /**

@@ -4,6 +4,7 @@ public enum FileType {
 
     MODULE("module","模组","module/"),
     DEFAULT("default","默认","default/"),
+    MAP("map","地图","map/"),
     COVER("cover","模组封面","cover/");
 
     private String type;

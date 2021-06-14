@@ -64,6 +64,33 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public void uploafFile(MultipartFile file, String fileUrl) {
+        BufferedOutputStream stream = null;
+        try{
+            File dest = new File(fileUrl);
+            String tempo  = dest.getParentFile().getPath();
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            byte[] bytes = file.getBytes();
+            stream = new BufferedOutputStream(new FileOutputStream(dest));
+            stream.write(bytes);
+            stream.close();
+        }
+        catch(Exception e){
+            throw new OpException(ResultCode.FILE_OPERATION_FAIL.getCode(),ResultCode.FILE_OPERATION_FAIL.getDesc());
+        }
+    }
+
+    @Override
+    public void deleteFile(String filename) {
+        File file = new File("test.txt");
+        if(file.exists()){
+            file.delete();
+        }
+    }
+
+    @Override
     public List<String> uploadFiles(MultipartFile[] files) {
         List<String> result = new ArrayList<>();
         for(MultipartFile file : files){

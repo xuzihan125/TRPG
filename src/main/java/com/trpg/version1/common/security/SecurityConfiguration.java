@@ -83,7 +83,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                         "/img/**",
                         "/webjars/**",
                         "/swagger-ui/**",
-                        "/swagger-ui.html"
+                        "/swagger-ui.html",
+                        "/test/**"
                 )
                 .permitAll()
                 .antMatchers("/auth/**","/login").permitAll()

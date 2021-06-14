@@ -13,6 +13,7 @@ import com.trpg.version1.mybatis.entity.SysUser;
 import com.trpg.version1.mybatis.vo.RoomUserLevelVO;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.Impl.WebSocketServiceImpl;
+import com.trpg.version1.service.OperationService;
 import com.trpg.version1.service.WebSocketService;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class RoomOpController {
 
     @Resource
     WebSocketService webSocketService;
+
+    @Resource
+    OperationService operationService;
 
     /**
      * @description: 创建房间
@@ -252,25 +256,47 @@ public class RoomOpController {
         return new JsonMessage(webSocketService.createBoard(infoBoardDTO,uid,rid));
     }
 
-//    @RequestMapping(value = "/room/createBoard/{uid}/{rid}",method = RequestMethod.POST)
-//    public JsonMessage<Integer> changeBoard(@RequestBody @Valid InfoBoardDTO infoBoardDTO, BindingResult bindingResult,
-//                                            @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
-//        if(bindingResult.hasErrors()){
-//            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
-//            throw new OpException(resultCode.getCode(),resultCode.getDesc());
-//        }
-//        return new JsonMessage(webSocketService.createBoard(infoBoardDTO,uid,rid));
-//    }
-//
-//    @RequestMapping(value = "/room/createBoard/{uid}/{rid}",method = RequestMethod.POST)
-//    public JsonMessage<Integer> deleteBoard(@RequestBody @Valid InfoBoardDTO infoBoardDTO, BindingResult bindingResult,
-//                                            @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
-//        if(bindingResult.hasErrors()){
-//            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
-//            throw new OpException(resultCode.getCode(),resultCode.getDesc());
-//        }
-//        return new JsonMessage(webSocketService.createBoard(infoBoardDTO,uid,rid));
-//    }
+    @RequestMapping(value = "/room/changeBoard/{uid}/{rid}",method = RequestMethod.POST)
+    public JsonMessage<String> changeBoard(@RequestBody @Valid InfoBoardDTO infoBoardDTO, BindingResult bindingResult,
+                                            @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+        if(bindingResult.hasErrors()){
+            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
+            throw new OpException(resultCode.getCode(),resultCode.getDesc());
+        }
+        return new JsonMessage(webSocketService.changeBoard(infoBoardDTO,uid,rid));
+    }
+
+    @RequestMapping(value = "/room/deleteBoard/{uid}/{rid}",method = RequestMethod.POST)
+    public JsonMessage<String> deleteBoard(Integer boardId,
+                                            @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+        return new JsonMessage(webSocketService.deleteBoard(boardId,uid,rid));
+    }
+
+    @RequestMapping(value = "/room/createMap/{uid}/{rid}",method = RequestMethod.POST)
+    public JsonMessage<Integer> createMap(@RequestBody @Valid MapDTO mapDTO, BindingResult bindingResult,
+                                            @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+        if(bindingResult.hasErrors()){
+            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
+            throw new OpException(resultCode.getCode(),resultCode.getDesc());
+        }
+        return new JsonMessage(webSocketService.createMap(mapDTO,uid,rid));
+    }
+
+    @RequestMapping(value = "/room/changeMap/{uid}/{rid}",method = RequestMethod.POST)
+    public JsonMessage<String> changeMap(@RequestBody @Valid MapDTO mapDTO, BindingResult bindingResult,
+                                           @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+        if(bindingResult.hasErrors()){
+            ResultCode resultCode = ResultCodeUtil.getCodeFromBind(bindingResult);
+            throw new OpException(resultCode.getCode(),resultCode.getDesc());
+        }
+        return new JsonMessage(webSocketService.changeMap(mapDTO,uid,rid));
+    }
+
+    @RequestMapping(value = "/room/deleteMap/{uid}/{rid}",method = RequestMethod.POST)
+    public JsonMessage<String> deleteMap(Integer boardId,
+                                           @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+        return new JsonMessage(webSocketService.deleteMap(boardId,uid,rid));
+    }
 
     /**
      * @description: 发送信息
@@ -297,12 +323,16 @@ public class RoomOpController {
         return new JsonMessage<>("发送成功");
     }
 
-
-    @Scheduled(fixedRate = 5000)
-    public void sendMessage(){
-        logger.info("发送信息");
-        simpMessagingTemplate.convertAndSend("/topic/1","后端发送信息-测试");
+    @RequestMapping(value = "/test/test", method = RequestMethod.GET)
+    public void test(String test){
+        operationService.checkOp(test,0);
     }
+
+//    @Scheduled(fixedRate = 5000)
+//    public void sendMessage(){
+//        logger.info("发送信息");
+//        simpMessagingTemplate.convertAndSend("/topic/1","后端发送信息-测试");
+//    }
 
 //    /**
 //     * 精准推送

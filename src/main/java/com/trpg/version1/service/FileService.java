@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface FileService {
+    void uploafFile(MultipartFile file, String filename);
+
+    void deleteFile(String filename);
+
     String uploadFile(MultipartFile files, String filename, FileType type);
 
     List<String> uploadFiles(MultipartFile[] files);
