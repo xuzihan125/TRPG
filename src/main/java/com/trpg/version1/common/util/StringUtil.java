@@ -1,5 +1,7 @@
 package com.trpg.version1.common.util;
 
+import java.util.Random;
+
 /**
  * @author xuzihan
  * @version 1.0

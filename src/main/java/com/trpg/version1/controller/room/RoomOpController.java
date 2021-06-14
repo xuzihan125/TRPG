@@ -325,8 +325,8 @@ public class RoomOpController {
     }
 
     @RequestMapping(value = "/test/test", method = RequestMethod.GET)
-    public void test(String test){
-        logger.info(operationService.checkOp(test,0));
+    public String test(String test, Integer cid){
+        return operationService.checkOp(test,cid);
     }
 
 //    @Scheduled(fixedRate = 5000)

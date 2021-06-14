@@ -13,8 +13,9 @@ import java.util.Date;
 @Data
 public class ChatMessageDTO {
     private String name;
-    private int senderUid;
+    private String cid;
+    private String senderUid;
     private String content;
-    private int targetChatId;
+    private String targetChatId;
     private String time;
 }

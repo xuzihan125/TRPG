@@ -89,6 +89,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private RoomMapMapper roomMapMapper;
+
+    @Resource
+    private OperationServiceImpl operationService;
 //    private
 
 //    public static Map<String, List<String>> roomChat = new ConcurrentHashMap<>();
@@ -149,8 +152,7 @@ public class WebSocketServiceImpl implements WebSocketService {
      *
      */
     public void send(ChatMessageDTO chatMessageDTO) {
-
-//        ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
+        chatMessageDTO.setContent(operationService.checkOp(chatMessageDTO.getContent(),Integer.valueOf(chatMessageDTO.getCid())));
         ChatUserExample example = new ChatUserExample();
         example.createCriteria().andChatidEqualTo(Integer.valueOf(chatMessageDTO.getTargetChatId()));
         List<ChatUser> result = chatUserMapper.selectByExample(example);
