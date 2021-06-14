@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -26,6 +27,8 @@ public class OperationServiceImpl implements OperationService {
     @Override
     public String checkOp(String content, Integer cid) {
         if(Pattern.matches(rollDice,content)){
+            Pattern r = Pattern.compile(rollDice);
+            Matcher group = r.matcher(content);
             log.info("roleDice");
         }
         else if(Pattern.matches(checkSkill,content)){
