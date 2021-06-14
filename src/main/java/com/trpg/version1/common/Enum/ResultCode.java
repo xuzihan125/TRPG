@@ -53,6 +53,7 @@ public enum ResultCode {
     USER_NOT_IN_ROOM("040002","用户不在指定房间内"),
     USER_SELF_OP("040003","用户不可对自己执行该操作"),
     CHARACTER_NOT_BELONG("040004","角色归属权错误"),
+    CHATEGROUP_NOT_EXIST("040005","聊组不存在"),
     //05：文件操作
     FILE_OPERATION_FAIL("050001","同名文件已存在"),
     FILE_EMPTY("050002","文件为空"),

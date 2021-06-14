@@ -349,7 +349,7 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Override
     public ChatGroup getChatGroupList(Integer chatGroupId) {
-        if(chatGroupId == null || chatGroupId.size() == 0){
+        if(chatGroupId == null){
             throw new OpException(ResultCode.INVALID_INPUT.getCode(),ResultCode.INVALID_INPUT.getDesc());
         }
         ChatGroupExample example = new ChatGroupExample();
