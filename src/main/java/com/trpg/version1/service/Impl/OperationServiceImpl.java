@@ -53,7 +53,7 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public String checkOp(String content, Integer cid) {
-        String result = "";
+        String result = content;
         if(Pattern.matches(rollDice,content)){
             Pattern r = Pattern.compile(rollDice);
             Matcher m = r.matcher(content);

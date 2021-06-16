@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReadWriteLock;
 
 /**
  * @author xuzihan
@@ -31,6 +32,8 @@ public class FileServiceImpl implements FileService {
 
     @Value("${relativePath.file}")
     private String fileRel;
+
+    private static Map<String, ReadWriteLock> fileLock = new HashMap<>();
 
     @Override
     public String createEmptyFile(String filename, FileType type) {
@@ -101,7 +104,8 @@ public class FileServiceImpl implements FileService {
     @Override
     public void recordLine(ChatMessageDTO chatMessageDTO, Integer chatId) {
         String dir = absPath + FileType.RECORD.getDir() + chatId+".txt";
-//        File
+        File file = new File(dir);
+
     }
 
     @Override
@@ -130,7 +134,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public String downloadFile(String name, HttpServletResponse response) {
 
-        //        logService.logDownload("H:/learn/软件系统设计/file/"+name, response);
+        //logService.logDownload("H:/learn/软件系统设计/file/"+name, response);
         System.out.println(name);
         // 获取文件
         File file = new File(name);
