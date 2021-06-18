@@ -1,6 +1,8 @@
 package com.trpg.version1.mybatis.dto;
 
 import com.trpg.version1.mybatis.entity.*;
+import com.trpg.version1.mybatis.vo.AbilityVO;
+import com.trpg.version1.mybatis.vo.AttributeVO;
 import lombok.Data;
 
 import java.util.List;
@@ -14,9 +16,12 @@ import java.util.List;
 @Data
 public class CreateCharacterDTO {
     String c_name;
-    List<AttributeCharacter> attribute_List;
-    List<DescriptionCharacter> desc_form;
-    List<Item> item_list;
-    List<Ability> abilityList;
-    String SHJZ; //伤害加值
+    String sex;
+    String age;
+    String time;
+    String resident;
+    String home;
+    List<AttributeVO> attribute_List;
+//    List<DescriptionCharacter> desc_form;
+    List<AbilityVO> abilityList;
 }

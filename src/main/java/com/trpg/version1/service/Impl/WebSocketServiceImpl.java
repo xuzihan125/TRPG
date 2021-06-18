@@ -10,6 +10,7 @@ import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.room.*;
 import com.trpg.version1.mybatis.entity.*;
+import com.trpg.version1.mybatis.vo.CharacterVO;
 import com.trpg.version1.mybatis.vo.RoomUserLevelVO;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.FileService;
@@ -92,6 +93,8 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private OperationServiceImpl operationService;
+
+
 
     //================================================================================
     //================================================================================
@@ -463,6 +466,21 @@ public class WebSocketServiceImpl implements WebSocketService {
     }
 
     @Override
+    public InfoBoard getBoard(Integer boardId, Integer uid, Integer rid) {
+        if(RoomRoleEnum.VIEWER.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        InfoBoardExample example = new InfoBoardExample();
+        example.createCriteria().andBoardidEqualTo(boardId).andRoomidEqualTo(rid);
+        List<InfoBoard> entityList = infoBoardMapper.selectByExample(example);
+        InfoBoard infoBoard = entityList.stream().findFirst().orElse(null);
+        if(infoBoard == null){
+            throw new OpException(ResultCode.INFOBOARD_NOT_EXIST.getCode(),ResultCode.INFOBOARD_NOT_EXIST.getDesc());
+        }
+        return infoBoard;
+    }
+
+    @Override
     public String deleteBoard(Integer boardId, Integer uid, Integer rid) {
         if(RoomRoleEnum.PLAYER.checkLevel(getUserRoomRole(uid,rid))){
             throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
@@ -507,6 +525,21 @@ public class WebSocketServiceImpl implements WebSocketService {
     }
 
     @Override
+    public RoomMap getMap(Integer boardId, Integer uid, Integer rid) {
+        if(RoomRoleEnum.VIEWER.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        RoomMapExample example = new RoomMapExample();
+        example.createCriteria().andRoomidEqualTo(rid).andMapidEqualTo(boardId);
+        List<RoomMap> roomMapList = roomMapMapper.selectByExample(example);
+        RoomMap entity = roomMapList.stream().findFirst().orElse(null);
+        if(entity==null){
+            throw new OpException(ResultCode.MAP_NOT_EXIST.getCode(),ResultCode.MAP_NOT_EXIST.getDesc());
+        }
+        return entity;
+    }
+
+    @Override
     public String deleteMap(Integer boardId, Integer uid, Integer rid) {
         if(RoomRoleEnum.HOST.checkLevel(getUserRoomRole(uid,rid))){
             throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
@@ -536,7 +569,28 @@ public class WebSocketServiceImpl implements WebSocketService {
         return result;
     }
 
-//    /**
+    @Override
+    public List<CharacterVO> getAllCharacter(Integer uid, Integer rid) {
+        if(RoomRoleEnum.VIEWER.checkLevel(getUserRoomRole(uid,rid))){
+            throw new OpException(ResultCode.INVALID_ROOM_ROLE.getCode(),ResultCode.INVALID_ROOM_ROLE.getDesc());
+        }
+        CharacterRoomExample characterRoomExample = new CharacterRoomExample();
+        characterRoomExample.createCriteria().andRoomidEqualTo(rid);
+        List<CharacterRoom> characterRoomList = characterRoomMapper.selectByExample(characterRoomExample);
+        List<CharacterVO> result = new ArrayList<>();
+        characterRoomList.stream().forEach(entity->{
+            CharacterVO characterVO = new CharacterVO();
+            characterVO.setCid(entity.getCharacterid());
+            CharactExample charactExample = new CharactExample();
+            charactExample.createCriteria().andCharacteridEqualTo(entity.getCharacterid());
+//            List<>
+            result.add(characterVO);
+            //todo
+        });
+        return result;
+    }
+
+    //    /**
 //     * 发送消息 (单向通知发送，不可回复)
 //     *
 //     * @param form     发送人id

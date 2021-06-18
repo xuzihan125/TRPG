@@ -1,7 +1,11 @@
 package com.trpg.version1.service.Impl;
 
+import com.trpg.version1.common.Enum.AbilityEnum;
+import com.trpg.version1.common.Enum.AttributeEnum;
 import com.trpg.version1.mybatis.dao.*;
 import com.trpg.version1.mybatis.dto.CreateCharacterDTO;
+import com.trpg.version1.mybatis.entity.Ability;
+import com.trpg.version1.mybatis.entity.AttributeCharacter;
 import com.trpg.version1.mybatis.entity.Charact;
 import com.trpg.version1.service.CharacterService;
 import org.springframework.stereotype.Service;
@@ -34,19 +38,31 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public String createCharacter(Integer uid, CreateCharacterDTO createCharacterDTO) {
         Charact charact = new Charact();
-        charact.setName(createCharacterDTO.getC_name());
-        charact.setDemage(createCharacterDTO.getSHJZ());
         charact.setUserid(uid);
+        charact.setName(createCharacterDTO.getC_name());
+        charact.setAge(createCharacterDTO.getAge());
+        charact.setSex(createCharacterDTO.getSex());
+        charact.setTime(createCharacterDTO.getTime());
+        charact.setResident(createCharacterDTO.getResident());
+        charact.setHome(createCharacterDTO.getHome());
         charact.setState(0);
         int cid = charactMapper.insert(charact);
-//        createCharacterDTO.get
-        createCharacterDTO.getAbilityList().stream().forEach(e->{
-            e.setCharacterid(cid);
-            abilityMapper.insert(e);
+        createCharacterDTO.getAttribute_List().forEach(e->{
+            AttributeCharacter attributeCharacter = new AttributeCharacter();
+            attributeCharacter.setNum(e.getNum());
+            attributeCharacter.setCharacterid(cid);
+            attributeCharacter.setAttributeid(AttributeEnum.getAid(e.getName()));
+            attributeCharacterMapper.insert(attributeCharacter);
         });
-        createCharacterDTO.getAttribute_List().stream().forEach(e->{e.setCharacterid(cid);attributeCharacterMapper.insert(e);});
-        createCharacterDTO.getDesc_form().stream().forEach(e->{e.setCharacterid(cid);desccriptionCharacterMapper.insert(e);});
-        createCharacterDTO.getItem_list().stream().forEach(e->{e.setCharacterid(cid);itemMapper.insert(e);});
+        createCharacterDTO.getAbilityList().stream().forEach(e->{
+            Ability ability = new Ability();
+            ability.setCharacterid(cid);
+            ability.setNumlearn(e.getNumLearn());
+            ability.setNumhobby(e.getNumHobby());
+            ability.setNumpro(e.getNumPro());
+            ability.setSkillid(AbilityEnum.getAid(e.getName()));
+            abilityMapper.insert(ability);
+        });
         return "创建成功";
     }
 }

@@ -4,13 +4,13 @@ import com.trpg.version1.common.Enum.ResultCode;
 import com.trpg.version1.common.JsonMessage;
 import com.trpg.version1.common.exception.OpException;
 import com.trpg.version1.common.util.ResultCodeUtil;
+import com.trpg.version1.mybatis.dao.RoomUserMapper;
 import com.trpg.version1.mybatis.dto.ChatGroupDTO;
 import com.trpg.version1.mybatis.dto.ChatMessageDTO;
 import com.trpg.version1.mybatis.dto.UserDTO;
 import com.trpg.version1.mybatis.dto.room.*;
-import com.trpg.version1.mybatis.entity.ChatGroup;
-import com.trpg.version1.mybatis.entity.Room;
-import com.trpg.version1.mybatis.entity.SysUser;
+import com.trpg.version1.mybatis.entity.*;
+import com.trpg.version1.mybatis.vo.CharacterVO;
 import com.trpg.version1.mybatis.vo.RoomUserLevelVO;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.Impl.WebSocketServiceImpl;
@@ -267,6 +267,12 @@ public class RoomOpController {
         return new JsonMessage(webSocketService.changeBoard(infoBoardDTO,uid,rid));
     }
 
+    @RequestMapping(value = "/room/getBoard/{uid}/{rid}",method = RequestMethod.POST)
+    public JsonMessage<InfoBoard> getBoard(Integer boardId,
+                                           @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+        return new JsonMessage<InfoBoard>(webSocketService.getBoard(boardId,uid,rid));
+    }
+
     @RequestMapping(value = "/room/deleteBoard/{uid}/{rid}",method = RequestMethod.POST)
     public JsonMessage<String> deleteBoard(Integer boardId,
                                             @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
@@ -293,10 +299,21 @@ public class RoomOpController {
         return new JsonMessage(webSocketService.changeMap(mapDTO,uid,rid));
     }
 
+    @RequestMapping(value = "/room/getMap/{uid}/{rid}",method = RequestMethod.POST)
+    public JsonMessage<RoomMap> getMap(Integer boardId,
+                                       @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+        return new JsonMessage<RoomMap>(webSocketService.getMap(boardId,uid,rid));
+    }
+
     @RequestMapping(value = "/room/deleteMap/{uid}/{rid}",method = RequestMethod.POST)
     public JsonMessage<String> deleteMap(Integer boardId,
                                            @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
         return new JsonMessage(webSocketService.deleteMap(boardId,uid,rid));
+    }
+
+    @RequestMapping(value = "/room/getAllCharacter/{uid}/{rid}",method = RequestMethod.GET)
+    public JsonMessage<List<CharacterVO>> getAllCharacter(@PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
+        return new JsonMessage<List<CharacterVO>>(webSocketService.getAllCharacter(uid,rid));
     }
 
     /**
