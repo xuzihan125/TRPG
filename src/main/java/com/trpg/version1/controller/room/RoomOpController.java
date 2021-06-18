@@ -267,7 +267,7 @@ public class RoomOpController {
         return new JsonMessage(webSocketService.changeBoard(infoBoardDTO,uid,rid));
     }
 
-    @RequestMapping(value = "/room/getBoard/{uid}/{rid}",method = RequestMethod.POST)
+    @RequestMapping(value = "/room/getBoard/{uid}/{rid}",method = RequestMethod.GET)
     public JsonMessage<InfoBoard> getBoard(Integer boardId,
                                            @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
         return new JsonMessage<InfoBoard>(webSocketService.getBoard(boardId,uid,rid));
@@ -299,7 +299,7 @@ public class RoomOpController {
         return new JsonMessage(webSocketService.changeMap(mapDTO,uid,rid));
     }
 
-    @RequestMapping(value = "/room/getMap/{uid}/{rid}",method = RequestMethod.POST)
+    @RequestMapping(value = "/room/getMap/{uid}/{rid}",method = RequestMethod.GET)
     public JsonMessage<RoomMap> getMap(Integer boardId,
                                        @PathVariable(value = "uid")Integer uid, @PathVariable(value = "rid")Integer rid){
         return new JsonMessage<RoomMap>(webSocketService.getMap(boardId,uid,rid));

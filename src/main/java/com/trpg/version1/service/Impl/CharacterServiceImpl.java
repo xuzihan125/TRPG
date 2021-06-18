@@ -46,12 +46,14 @@ public class CharacterServiceImpl implements CharacterService {
         charact.setResident(createCharacterDTO.getResident());
         charact.setHome(createCharacterDTO.getHome());
         charact.setState(0);
-        int cid = charactMapper.insert(charact);
+        charactMapper.insert(charact);
+        int cid = charact.getCharacterid();
         createCharacterDTO.getAttribute_List().forEach(e->{
             AttributeCharacter attributeCharacter = new AttributeCharacter();
             attributeCharacter.setNum(e.getNum());
             attributeCharacter.setCharacterid(cid);
             attributeCharacter.setAttributeid(AttributeEnum.getAid(e.getName()));
+            attributeCharacter.setState(0);
             attributeCharacterMapper.insert(attributeCharacter);
         });
         createCharacterDTO.getAbilityList().stream().forEach(e->{
@@ -61,6 +63,7 @@ public class CharacterServiceImpl implements CharacterService {
             ability.setNumhobby(e.getNumHobby());
             ability.setNumpro(e.getNumPro());
             ability.setSkillid(AbilityEnum.getAid(e.getName()));
+            ability.setState(0);
             abilityMapper.insert(ability);
         });
         return "创建成功";

@@ -27,4 +27,6 @@ public class CharacterController {
     public JsonMessage<String> createRoom(@PathVariable("uid") Integer uid, @RequestBody CreateCharacterDTO createCharacterDTO){
         return new JsonMessage(characterService.createCharacter(uid,createCharacterDTO));
     }
+
+//    @RequestMapping(value = "/Character/getList")
 }
