@@ -142,7 +142,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         BeanUtils.copyProperties(room1,room);
         roomMapper.insert(room);
         int rid = room.getRoomid();
-                //创建人员等级
+        //创建人员等级
         RoomUser roomUser = new RoomUser();
         roomUser.setRoomid(rid);
         roomUser.setState(0);

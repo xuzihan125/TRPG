@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserRoomCharacterMapper {
     @Select("SELECT r.`level`, u.nickname, u.userId, cr.characterId, d.content FROM `roomUser` AS r " +
             "LEFT JOIN sys_user AS u ON u.userId = r.userId LEFT JOIN characterRoom cr ON cr.userId=r.userId " +
-            "LEFT JOIN descriptionCharacter AS d on d.characterId = cr.characterId WHERE r.roomId = 7 " +
+            "LEFT JOIN descriptionCharacter AS d on d.characterId = cr.characterId WHERE r.roomId = #{uid} " +
             "AND (descriptionId = 1 or descriptionId is null)")
     @Results(id = "RoomUserLevelVO", value = {
             @Result(column = "level", property = "level"),
