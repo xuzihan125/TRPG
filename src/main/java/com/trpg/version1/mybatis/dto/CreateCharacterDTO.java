@@ -15,6 +15,7 @@ import java.util.List;
  **/
 @Data
 public class CreateCharacterDTO {
+    Integer cid;
     String c_name;
     String sex;
     String age;
@@ -24,4 +25,20 @@ public class CreateCharacterDTO {
     List<AttributeVO> attribute_List;
 //    List<DescriptionCharacter> desc_form;
     List<AbilityVO> abilityList;
+
+    public CreateCharacterDTO(Integer cid,String c_name, String sex, String age, String time, String resident, String home) {
+        this.cid = cid;
+        this.c_name = c_name;
+        this.sex = sex;
+        this.age = age;
+        this.time = time;
+        this.resident = resident;
+        this.home = home;
+    }
+
+    public CreateCharacterDTO(){
+
+    }
 }
+
+

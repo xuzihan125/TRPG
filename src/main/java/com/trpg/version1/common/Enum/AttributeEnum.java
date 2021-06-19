@@ -33,4 +33,13 @@ public enum AttributeEnum {
         return null;
     }
 
+    public static String getName(Integer aid){
+        for(AttributeEnum entity:AttributeEnum.values()){
+            if(entity.aid == aid){
+                return entity.name;
+            }
+        }
+        return null;
+    }
+
 }

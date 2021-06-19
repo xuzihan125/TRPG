@@ -35,4 +35,13 @@ public enum AbilityEnum {
         }
         return null;
     }
+
+    public static String getName(Integer aid){
+        for(AbilityEnum entity:AbilityEnum.values()){
+            if(entity.aid==aid){
+                return entity.name;
+            }
+        }
+        return null;
+    }
 }

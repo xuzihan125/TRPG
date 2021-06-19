@@ -39,6 +39,7 @@ public enum ResultCode {
     INVALID_ABILITY_NUM("010031", "属性值超出取值范围"),
     INVALID_PAGE_PARAM("010032","page参数错误"),
     MAP_NOT_EXIST("010033","目标地图不存在"),
+    CHARACTER_NOT_EXIST("010034","目标角色不存在"),
     //02:账号
     EMAIL_ALREADY_EXIST("020001","邮箱已存在"),
     TOKENERROR("020002","token错误"),

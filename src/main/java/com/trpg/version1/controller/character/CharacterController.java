@@ -2,13 +2,16 @@ package com.trpg.version1.controller.character;
 
 import com.trpg.version1.common.JsonMessage;
 import com.trpg.version1.mybatis.dto.CreateCharacterDTO;
+import com.trpg.version1.mybatis.entity.Charact;
 import com.trpg.version1.mybatis.entity.Room;
+import com.trpg.version1.mybatis.vo.CharacterVO;
 import com.trpg.version1.mybatis.vo.RoomVO;
 import com.trpg.version1.service.CharacterService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author xuzihan
@@ -28,5 +31,13 @@ public class CharacterController {
         return new JsonMessage(characterService.createCharacter(uid,createCharacterDTO));
     }
 
-//    @RequestMapping(value = "/Character/getList")
+    @RequestMapping(value = "/Character/getList/{uid}", method = RequestMethod.GET)
+    public JsonMessage<List<Charact>> getCharacterList(@PathVariable("uid") Integer uid){
+        return new JsonMessage<List<Charact>>(characterService.getCharacterList(uid));
+    }
+
+    @RequestMapping(value = "/Character/getList/{uid}", method = RequestMethod.GET)
+    public JsonMessage<CreateCharacterDTO> getCharacterList(@PathVariable("uid") Integer uid, Integer cid){
+        return new JsonMessage<CreateCharacterDTO>(characterService.getCharacter(uid,cid));
+    }
 }
