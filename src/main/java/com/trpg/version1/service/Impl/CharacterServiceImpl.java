@@ -15,8 +15,7 @@ import com.trpg.version1.service.CharacterService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author xuzihan
@@ -60,28 +59,34 @@ public class CharacterServiceImpl implements CharacterService {
             attributeCharacterMapper.insert(attributeCharacter);
         });
         createCharacterDTO.getAbilityList().stream().forEach(e->{
-            Ability ability = new Ability();
-            ability.setCharacterid(cid);
-            ability.setNumlearn(e.getNumLearn());
-            ability.setNumhobby(e.getNumHobby());
-            ability.setNumpro(e.getNumPro());
-            ability.setSkillid(AbilityEnum.getAid(e.getName()));
-            ability.setState(0);
-            abilityMapper.insert(ability);
+            if(e.getNumHobby()!=0 || e.getNumLearn()!=0 || e.getNumPro()!=0){
+                Ability ability = new Ability();
+                ability.setCharacterid(cid);
+                ability.setNumlearn(e.getNumLearn());
+                ability.setNumhobby(e.getNumHobby());
+                ability.setNumpro(e.getNumPro());
+                ability.setSkillid(AbilityEnum.getAid(e.getName()));
+                ability.setState(0);
+                abilityMapper.insert(ability);
+            }
         });
         return "创建成功";
     }
 
     @Override
-    public List<Charact> getCharacterList(Integer uid) {
+    public List<CharacterVO> getCharacterList(Integer uid) {
         CharactExample charactExample = new CharactExample();
         charactExample.createCriteria().andUseridEqualTo(uid);
         List<Charact> entityList = charactMapper.selectByExample(charactExample);
-        return entityList;
+        List<CharacterVO> result = new ArrayList<>();
+        entityList.forEach(charact -> {
+            result.add(getCharacter(uid,charact.getCharacterid()));
+        });
+        return result;
     }
 
     @Override
-    public CreateCharacterDTO getCharacter(Integer uid, Integer cid) {
+    public CharacterVO getCharacter(Integer uid, Integer cid) {
 
         CharactExample charactExample = new CharactExample();
         charactExample.createCriteria().andCharacteridEqualTo(cid);
@@ -90,23 +95,20 @@ public class CharacterServiceImpl implements CharacterService {
         if(entity == null){
             throw new OpException(ResultCode.CHARACTER_NOT_EXIST.getCode(),ResultCode.CHARACTER_NOT_EXIST.getDesc());
         }
-        CreateCharacterDTO result = new CreateCharacterDTO(entity.getCharacterid(),entity.getName(),
+        CharacterVO result = new CharacterVO(entity.getCharacterid(),entity.getName(),
                 entity.getSex(),entity.getAge(), entity.getTime(),entity.getResident(),entity.getHome());
 
-        List<AttributeVO> attributeVOList = new ArrayList<>();
+        Map<String, Integer> attributeVOList = new HashMap<>();
         AttributeCharacterExample example = new AttributeCharacterExample();
         example.createCriteria().andCharacteridEqualTo(entity.getCharacterid());
         List<AttributeCharacter> attributeCharacterList = attributeCharacterMapper.selectByExample(example);
         attributeCharacterList.forEach(e->{
-            AttributeVO attributeVO = new AttributeVO();
-            attributeVO.setName(AttributeEnum.getName(e.getAttributeid()));
-            attributeVO.setNum(e.getNum());
-            attributeVOList.add(attributeVO);
+            attributeVOList.put(AttributeEnum.getName(e.getAttributeid()),e.getNum());
         });
-        result.setAttribute_List(attributeVOList);
+        result.setAttribute(attributeVOList);
 
         List<AbilityVO> abilityVOList = characterExt.getAbility(entity.getCharacterid());
-        result.setAbilityList(abilityVOList);
+        result.setAbility(abilityVOList);
         return result;
     }
 }

@@ -29,10 +29,30 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.trpg.version1.mybatis.dao" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
-
-        <table tableName="module" domainObjectName = "Module"  enableCountByExample="true"  >
-            <generatedKey column="mid" sqlStatement="MySql" identity="true" />
-        </table>
+            <table tableName="sys_user" domainObjectName = "SysUser"  enableCountByExample="true"  >
+                <generatedKey column="userId" sqlStatement="MySql" identity="true" />
+            </table>
+<!--        <table tableName="charact" domainObjectName = "Charact"  enableCountByExample="true"  >-->
+<!--            <generatedKey column="characterId" sqlStatement="MySql" identity="true" />-->
+<!--        </table>-->
+<!--        <table tableName="descriptionCharacter" domainObjectName = "DescriptionCharacter"  enableCountByExample="true"  >-->
+<!--&lt;!&ndash;            <generatedKey column="skillId" sqlStatement="MySql" identity="true" />&ndash;&gt;-->
+<!--        </table>-->
+<!--        <table tableName="item" domainObjectName = "Item"  enableCountByExample="true"  >-->
+<!--            <generatedKey column="itemId" sqlStatement="MySql" identity="true" />-->
+<!--        </table>-->
+<!--        <table tableName="skill" domainObjectName = "Skill"  enableCountByExample="true"  >-->
+<!--            <generatedKey column="skillId" sqlStatement="MySql" identity="true" />-->
+<!--        </table>-->
+<!--        <table tableName="ability" domainObjectName = "Ability"  enableCountByExample="true"  >-->
+<!--&lt;!&ndash;            <generatedKey column="skillId" sqlStatement="MySql" identity="true" />&ndash;&gt;-->
+<!--        </table>-->
+<!--        <table tableName="attribute" domainObjectName = "Attribute"  enableCountByExample="true"  >-->
+<!--            <generatedKey column="attributeId" sqlStatement="MySql" identity="true" />-->
+<!--        </table>-->
+<!--        <table tableName="attributeCharacter" domainObjectName = "AttributeCharacter"  enableCountByExample="true"  >-->
+<!--&lt;!&ndash;            <generatedKey column="skillId" sqlStatement="MySql" identity="true" />&ndash;&gt;-->
+<!--        </table>-->
     </context>
 </generatorConfiguration>
 

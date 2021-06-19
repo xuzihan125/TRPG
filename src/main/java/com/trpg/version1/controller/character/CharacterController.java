@@ -31,13 +31,13 @@ public class CharacterController {
         return new JsonMessage(characterService.createCharacter(uid,createCharacterDTO));
     }
 
-    @RequestMapping(value = "/Character/getList/{uid}", method = RequestMethod.GET)
-    public JsonMessage<List<Charact>> getCharacterList(@PathVariable("uid") Integer uid){
-        return new JsonMessage<List<Charact>>(characterService.getCharacterList(uid));
+    @RequestMapping(value = "/Character/getAllList/{uid}", method = RequestMethod.GET)
+    public JsonMessage<List<CharacterVO>> getCharacterList(@PathVariable("uid") Integer uid){
+        return new JsonMessage<List<CharacterVO>>(characterService.getCharacterList(uid));
     }
 
-    @RequestMapping(value = "/Character/getList/{uid}", method = RequestMethod.GET)
-    public JsonMessage<CreateCharacterDTO> getCharacterList(@PathVariable("uid") Integer uid, Integer cid){
-        return new JsonMessage<CreateCharacterDTO>(characterService.getCharacter(uid,cid));
+    @RequestMapping(value = "/Character/getCharacter/{uid}/{cid}", method = RequestMethod.GET)
+    public JsonMessage<CharacterVO> getCharacterList(@PathVariable("uid") Integer uid, Integer cid){
+        return new JsonMessage<CharacterVO>(characterService.getCharacter(uid,cid));
     }
 }

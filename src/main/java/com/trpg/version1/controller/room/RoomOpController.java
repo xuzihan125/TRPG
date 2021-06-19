@@ -58,7 +58,7 @@ public class RoomOpController {
      * @version 1.0
      */
     @RequestMapping(value = "/room/create/{uid}", method = RequestMethod.POST)
-    public JsonMessage<RoomVO> createRoom(@PathVariable("uid") String uid, Room room){
+    public JsonMessage<RoomVO> createRoom(@PathVariable("uid") String uid,@RequestBody Room room){
         return new JsonMessage(webSocketService.createRoom(uid,room));
     }
 

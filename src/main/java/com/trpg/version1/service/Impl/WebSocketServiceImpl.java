@@ -13,6 +13,7 @@ import com.trpg.version1.mybatis.entity.*;
 import com.trpg.version1.mybatis.vo.CharacterVO;
 import com.trpg.version1.mybatis.vo.RoomUserLevelVO;
 import com.trpg.version1.mybatis.vo.RoomVO;
+import com.trpg.version1.service.CharacterService;
 import com.trpg.version1.service.FileService;
 import com.trpg.version1.service.WebSocketService;
 import org.slf4j.Logger;
@@ -93,6 +94,9 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Resource
     private OperationServiceImpl operationService;
+
+    @Resource
+    private CharacterService characterService;
 
 
 
@@ -579,13 +583,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         List<CharacterRoom> characterRoomList = characterRoomMapper.selectByExample(characterRoomExample);
         List<CharacterVO> result = new ArrayList<>();
         characterRoomList.stream().forEach(entity->{
-            CharacterVO characterVO = new CharacterVO();
-            characterVO.setCid(entity.getCharacterid());
-            CharactExample charactExample = new CharactExample();
-            charactExample.createCriteria().andCharacteridEqualTo(entity.getCharacterid());
-//            List<>
-            result.add(characterVO);
-            //todo
+            result.add(characterService.getCharacter(uid, entity.getCharacterid()));
         });
         return result;
     }

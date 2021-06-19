@@ -9,7 +9,7 @@ import java.util.List;
 public interface CharacterService {
     public String createCharacter(Integer uid, CreateCharacterDTO createCharacterDTO);
 
-    public List<Charact> getCharacterList(Integer uid);
+    public List<CharacterVO> getCharacterList(Integer uid);
 
-    public CreateCharacterDTO getCharacter(Integer uid, Integer cid);
+    public CharacterVO getCharacter(Integer uid, Integer cid);
 }

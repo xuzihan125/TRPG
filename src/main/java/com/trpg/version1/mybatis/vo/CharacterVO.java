@@ -14,7 +14,26 @@ import java.util.Map;
 @Data
 public class CharacterVO {
     Integer cid;
-    String name;
+    String c_name;
+    String sex;
+    String age;
+    String time;
+    String resident;
+    String home;
     Map<String,Integer> attribute;
     List<AbilityVO> ability;
+
+    public CharacterVO(Integer cid,String c_name, String sex, String age, String time, String resident, String home) {
+        this.cid = cid;
+        this.c_name = c_name;
+        this.sex = sex;
+        this.age = age;
+        this.time = time;
+        this.resident = resident;
+        this.home = home;
+    }
+
+    public CharacterVO(){
+
+    }
 }

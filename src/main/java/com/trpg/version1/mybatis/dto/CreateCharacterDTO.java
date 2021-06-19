@@ -23,6 +23,7 @@ public class CreateCharacterDTO {
     String resident;
     String home;
     List<AttributeVO> attribute_List;
+
 //    List<DescriptionCharacter> desc_form;
     List<AbilityVO> abilityList;
 
