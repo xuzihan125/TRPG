@@ -1,27 +1,29 @@
 package com.trpg.version1.common.Enum;
 
 public enum AttributeEnum {
-    STR(1,"力量"),
-    CON(2,"体质"),
-    SIZ(3,"体型"),
-    DEX(4,"敏捷"),
-    APP(5,"外貌"),
-    INT(6,"智力"),
-    POW(7,"意志"),
-    EDU(8,"教育"),
-    LUCK(9,"幸运"),
-    HP(10,"血量"),
-    MP(11,"魔力"),
-    SAN(12,"理智");
+    STR("力量",1,"STR"),
+    CON("体质",2,"CON"),
+    SIZ("体型",3,"SIZ"),
+    DEX("敏捷",4,"DEX"),
+    APP("外貌",5,"APP"),
+    INT("智力",6,"INT"),
+    POW("意志",7,"POW"),
+    EDU("教育",8,"EDU"),
+    LUCK("幸运",9,"LUCK"),
+    HP("体力",10,"hp"),
+    MP("魔力",11,"mp"),
+    SAN("理智",12,"san");
 
 
 
     private Integer aid;
     private String name;
+    private String text;
 
-    AttributeEnum(Integer aid, String name) {
+    AttributeEnum( String name,Integer aid,String text) {
         this.aid = aid;
         this.name = name;
+        this.text = text;
     }
 
     public static Integer getAid(String name){
@@ -36,7 +38,7 @@ public enum AttributeEnum {
     public static String getName(Integer aid){
         for(AttributeEnum entity:AttributeEnum.values()){
             if(entity.aid == aid){
-                return entity.name;
+                return entity.text;
             }
         }
         return null;

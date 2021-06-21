@@ -167,6 +167,7 @@ public class UserServiceImpl implements UserService {
         userInfoVO.setNickname(user.getNickname());
         userInfoVO.setPhone(user.getPhone());
         userInfoVO.setDescri(user.getDescri());
+        userInfoVO.setGame_num(user.getGamefinish());
 
         //根据用户id查询出对应的评价列表
         CommentUserExample commentUserExample = new CommentUserExample();

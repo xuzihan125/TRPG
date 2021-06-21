@@ -70,7 +70,7 @@ public class RoomOpController {
      */
     @RequestMapping(value = "/room/delete/{uid}/{rid}", method = RequestMethod.DELETE)
     public JsonMessage<RoomVO> deleteRoom(@PathVariable("uid") String uid, @PathVariable("rid") Integer rid){
-        return new JsonMessage(webSocketService.deleteRoom(uid,rid));
+        return new JsonMessage(webSoketService.deleteRoom(uid,rid));
     }
 
     /**

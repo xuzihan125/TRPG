@@ -58,18 +58,20 @@ public class CharacterServiceImpl implements CharacterService {
             attributeCharacter.setState(0);
             attributeCharacterMapper.insert(attributeCharacter);
         });
-        createCharacterDTO.getAbilityList().stream().forEach(e->{
-            if(e.getNumHobby()!=0 || e.getNumLearn()!=0 || e.getNumPro()!=0){
-                Ability ability = new Ability();
-                ability.setCharacterid(cid);
-                ability.setNumlearn(e.getNumLearn());
-                ability.setNumhobby(e.getNumHobby());
-                ability.setNumpro(e.getNumPro());
-                ability.setSkillid(AbilityEnum.getAid(e.getName()));
-                ability.setState(0);
-                abilityMapper.insert(ability);
-            }
-        });
+        if(createCharacterDTO.getAbility_List()!=null){
+            createCharacterDTO.getAbility_List().stream().forEach(e->{
+                if(e.getNumHobby()!=0 || e.getNumLearn()!=0 || e.getNumPro()!=0){
+                    Ability ability = new Ability();
+                    ability.setCharacterid(cid);
+                    ability.setNumlearn(e.getNumLearn());
+                    ability.setNumhobby(e.getNumHobby());
+                    ability.setNumpro(e.getNumPro());
+                    ability.setSkillid(AbilityEnum.getAid(e.getName()));
+                    ability.setState(0);
+                    abilityMapper.insert(ability);
+                }
+            });
+        }
         return "创建成功";
     }
 

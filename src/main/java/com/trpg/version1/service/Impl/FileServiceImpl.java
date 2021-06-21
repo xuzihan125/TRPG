@@ -27,7 +27,7 @@ import java.util.concurrent.locks.ReadWriteLock;
  **/
 @Service
 public class FileServiceImpl implements FileService {
-    @Value("${absolutePath.resource}")
+    @Value("H:/learn/软件系统设计/front-coc-new/src/assets/target/classes/")
     private String absPath;
 
     @Value("${relativePath.file}")
@@ -76,6 +76,7 @@ public class FileServiceImpl implements FileService {
             stream = new BufferedOutputStream(new FileOutputStream(dest));
             stream.write(bytes);
             stream.close();
+            dir = "target/classes/" + type.getDir() + fileDir;
         } catch (Exception e) {
             throw new OpException(ResultCode.FILE_OPERATION_FAIL.getCode(),ResultCode.FILE_OPERATION_FAIL.getDesc());
         }

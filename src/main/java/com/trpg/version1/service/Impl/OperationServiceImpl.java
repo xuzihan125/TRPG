@@ -32,10 +32,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OperationServiceImpl implements OperationService {
 
-    @Value("${operation.rollDice}\\s(.*)")
+    @Value("^\\s*[.]r\\s(.*)")
     private String rollDice;
 
-    @Value("${operation.fileRel}\\s(.*)")
+    @Value("\\s*[.]rd\\s(.*)")
     private String checkSkill;
 
     @Resource

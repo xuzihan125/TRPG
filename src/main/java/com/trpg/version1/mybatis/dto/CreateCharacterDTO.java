@@ -25,7 +25,7 @@ public class CreateCharacterDTO {
     List<AttributeVO> attribute_List;
 
 //    List<DescriptionCharacter> desc_form;
-    List<AbilityVO> abilityList;
+    List<AbilityVO> ability_List;
 
     public CreateCharacterDTO(Integer cid,String c_name, String sex, String age, String time, String resident, String home) {
         this.cid = cid;

@@ -18,6 +18,7 @@ public class UserInfoVO {
     private String nickname;
     private String descri;
     private Integer avgscore;
+    private Integer game_num;
     private List<CommentUser> commentUserList;
     private Integer commentUserNum;
     private List<Charact> characterList;
